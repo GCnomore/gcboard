@@ -1,0 +1,43 @@
+.headerMenuWrapper {
+  background-color: white;
+  position: sticky;
+  top: 0;
+}
+
+.headerMenuWrapper > div > section {
+  margin-top: 0.5rem;
+}
+
+.headerMenuWrapper > div > section > a {
+  margin: 0.15rem;
+  padding: 0.2rem;
+  border-radius: 0.2rem;
+  background: linear-gradient(30deg, #1c1c1bd0, #1c1c1b, #1c1c1bc2);
+  color: #ce4a7e;
+}
+
+.headerMenuWrapper > div > section > a:hover {
+  opacity: 0.8;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.headerMenuWrapper > div > section > a:active {
+  background-color: #1c1c1b;
+  opacity: 1;
+}
+
+.topLeftSection > input,
+input::placeholder {
+  outline: none;
+  border: none;
+  padding: 0.2rem;
+  font-size: 1rem;
+  background: linear-gradient(30deg, #1c1c1bcb, #1c1c1b, #1c1c1bd0);
+  border-radius: 0.2rem;
+  color: #ce4a7e;
+}
+
+.headerMenuWrapper > div {
+  justify-content: space-between;
+}

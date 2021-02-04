@@ -1,16 +1,12 @@
 .headerMenuWrapper {
-  background-color: white;
-  position: sticky;
-  top: 0;
-}
-
-.headerMenuWrapper > div > section {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  width: 100vw;
+  position: fixed;
 }
 
 .headerMenuWrapper > div > section > a {
-  margin: 0.15rem;
-  padding: 0.2rem;
+  margin: 0 0.25rem 0 0.25rem;
+  padding: 0.5rem;
   border-radius: 0.2rem;
   background: linear-gradient(30deg, #1c1c1bd0, #1c1c1b, #1c1c1bc2);
   color: #ce4a7e;
@@ -31,7 +27,8 @@
 input::placeholder {
   outline: none;
   border: none;
-  padding: 0.2rem;
+  margin-top: -0.5rem;
+  padding: 0.5rem;
   font-size: 1rem;
   background: linear-gradient(30deg, #1c1c1bcb, #1c1c1b, #1c1c1bd0);
   border-radius: 0.2rem;
@@ -40,4 +37,8 @@ input::placeholder {
 
 .headerMenuWrapper > div {
   justify-content: space-between;
+}
+
+.bottomSection {
+  margin-top: 1rem;
 }

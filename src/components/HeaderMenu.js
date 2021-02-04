@@ -1,6 +1,13 @@
 import Grid from '@material-ui/core/Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faPlus,
+  faInfoCircle,
+  faBell,
+  faStar,
+  faEllipsisH,
+} from '@fortawesome/free-solid-svg-icons';
 
 import '../styles/HeaderMenu.css';
 
@@ -9,14 +16,22 @@ export default function HeaderMenu() {
     <div className="headerMenuWrapper">
       <Grid container className="topSection">
         <section className="topLeftSection">
-          <a>Home</a>
+          <a>
+            <FontAwesomeIcon icon={faBars} />
+          </a>
           <a>Boards</a>
           <input placeholder="Search"></input>
         </section>
         <section className="topRightSection">
-          <a>Create</a>
-          <a>Info</a>
-          <a>Notifications</a>
+          <a>
+            <FontAwesomeIcon icon={faPlus} />
+          </a>
+          <a>
+            <FontAwesomeIcon icon={faInfoCircle} />
+          </a>
+          <a>
+            <FontAwesomeIcon icon={faBell} />
+          </a>
           <a>Profile</a>
         </section>
       </Grid>
@@ -24,10 +39,15 @@ export default function HeaderMenu() {
         <section className="botLeftSection">
           <a>Board View</a>
           <a>Board Name</a>
-          <a>Star</a>|<a>Some other options</a>
+          <a>
+            <FontAwesomeIcon icon={faStar} />
+          </a>
+          |<a>Some other options</a>
         </section>
         <section className="botRightSection">
-          <a>Show Menu</a>
+          <a>
+            <FontAwesomeIcon icon={faEllipsisH} /> Show Menu
+          </a>
         </section>
       </Grid>
     </div>

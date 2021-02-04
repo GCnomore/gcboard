@@ -20,7 +20,6 @@ export default function HeaderMenu() {
             <FontAwesomeIcon icon={faBars} />
           </a>
           <a>Boards</a>
-          <input placeholder="Search"></input>
         </section>
         <section className="topRightSection">
           <a>

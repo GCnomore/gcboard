@@ -1,19 +1,25 @@
 .headerMenuWrapper {
-  margin-top: 1rem;
   width: 100vw;
   position: fixed;
+  margin-top: 1rem;
+}
+
+.headerMenuWrapper > div > section {
+  margin: 0 0.25rem 0.5rem 0.25rem;
 }
 
 .headerMenuWrapper > div > section > a {
   margin: 0 0.25rem 0 0.25rem;
   padding: 0.5rem;
   border-radius: 0.2rem;
-  background: linear-gradient(30deg, #1c1c1bd0, #1c1c1b, #1c1c1bc2);
-  color: #ce4a7e;
+  background: linear-gradient(30deg, #1c1c1b62, #1c1c1b6c, #1c1c1b60);
+  color: #fff;
+  font-weight: 500;
+  transition: 0.25s;
 }
 
 .headerMenuWrapper > div > section > a:hover {
-  opacity: 0.8;
+  opacity: 0.7;
   transition: 0.25s;
   cursor: pointer;
 }
@@ -21,18 +27,6 @@
 .headerMenuWrapper > div > section > a:active {
   background-color: #1c1c1b;
   opacity: 1;
-}
-
-.topLeftSection > input,
-input::placeholder {
-  outline: none;
-  border: none;
-  margin-top: -0.5rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-  background: linear-gradient(30deg, #1c1c1bcb, #1c1c1b, #1c1c1bd0);
-  border-radius: 0.2rem;
-  color: #ce4a7e;
 }
 
 .headerMenuWrapper > div {

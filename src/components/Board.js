@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import Card from './Card';
+
 import Grid from '@material-ui/core/Grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
+import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Board.css';
 
 export default function Board() {
@@ -32,12 +33,20 @@ export default function Board() {
       return (
         <div className="boardList">
           <section className="listHeader">
-            <div className="title">{item.title}</div>
-            <div className="menu"></div>
+            <div className="listMenu">
+              <a>
+                <FontAwesomeIcon icon={faEllipsisH} />
+              </a>
+            </div>
+            <div className="listTitle">
+              <a>{item.title}</a>
+            </div>
           </section>
           <section>{listItems(item.title)}</section>
           <section>
-            <FontAwesomeIcon icon={faPlus} /> Add another card
+            <a>
+              <FontAwesomeIcon icon={faPlus} /> Add another card
+            </a>
           </section>
         </div>
       );
@@ -56,7 +65,9 @@ export default function Board() {
     <Grid container className="boardWrapper">
       {renderList()}
       <div className="addList">
-        <FontAwesomeIcon icon={faPlus} /> Add another list
+        <a>
+          <FontAwesomeIcon icon={faPlus} /> Add another list
+        </a>
       </div>
     </Grid>
   );

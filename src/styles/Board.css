@@ -11,6 +11,12 @@
 
 a {
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.hide {
+  display: none !important;
 }
 
 .boardList {
@@ -54,16 +60,19 @@ a {
   font-size: 1.5rem;
 }
 
-.addList {
+.addList,
+.addCard {
   display: flex;
   flex-direction: column;
 }
 
-.addList > input {
+.addList > input,
+.addCard > input {
   height: 1.5rem;
 }
 
-.addList > div {
+.addList > div,
+.addCard > div {
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;

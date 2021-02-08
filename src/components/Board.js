@@ -1,40 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
-import Button from '@material-ui/core/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from "@material-ui/core/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisH,
   faPlus,
   faTimes,
-} from '@fortawesome/free-solid-svg-icons';
-import '../styles/Board.css';
+} from "@fortawesome/free-solid-svg-icons";
+import "../styles/Board.css";
 
 export default function Board() {
   const [list, setList] = useState([
     {
-      title: 'Sample',
+      title: "Sample",
       cards: [
         {
-          title: 'Sample Card',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
         },
         {
-          title: 'Sample Card2',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
         },
       ],
     },
   ]);
   const [addList, setAddList] = useState({
     add: false,
-    title: '',
+    title: "",
   });
+  const [addCard, setAddCard] = useState(false);
 
   const ref = useRef();
   useEffect(() => {
@@ -42,17 +43,14 @@ export default function Board() {
   }, [addList]);
   const prevAddList = ref.current;
 
-  useEffect(() => {
-    ref.current = list;
-  }, [list]);
-  const prevList = ref.current;
-
   const addAnotherList = () => {
     return (
       <div className="addList">
         <input
           placeholder="Enter list title"
-          onChange={(e) => setAddList({ add: true, title: e.target.value })}
+          onChange={(e) => {
+            setAddList({ add: true, title: e.target.value });
+          }}
         />
         <div>
           <Button
@@ -60,12 +58,13 @@ export default function Board() {
             onClick={(e) => {
               e.preventDefault();
               setList([
-                prevList,
+                ...list,
                 {
-                  title: addList,
+                  title: addList.title,
                   cards: [],
                 },
               ]);
+              setAddList({ add: false });
             }}
           >
             Add
@@ -74,6 +73,55 @@ export default function Board() {
             className="xBtn"
             icon={faTimes}
             onClick={() => setAddList({ add: false, title: prevAddList.title })}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const addAnotherCard = () => {
+    return (
+      <div className="addCard hide">
+        <input
+          placeholder="Enter card title"
+          onChange={(e) => {
+            setAddList(prevAddList.cards.push({ title: e.target.value }));
+          }}
+        />
+        <div>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+
+              const container =
+                e.target.parentNode.parentNode.parentNode.parentNode
+                  .lastElementChild;
+              container.classList.remove("hide");
+            }}
+          >
+            Add
+          </Button>
+          <FontAwesomeIcon
+            className="xBtn"
+            icon={faTimes}
+            onClick={(e) => {
+              const container =
+                e.target.parentNode.parentNode.parentNode.parentNode
+                  .lastElementChild;
+
+              const _container =
+                e.target.parentNode.parentNode.parentNode.parentNode
+                  .firstElementChild;
+
+              if (
+                container.classList[0] === "addCardBtn" &&
+                _container.classList[0] === "addCard"
+              ) {
+                container.classList.remove("hide");
+                _container.classList.add("hide");
+              }
+            }}
           />
         </div>
       </div>
@@ -94,18 +142,25 @@ export default function Board() {
               <a href="/">{item.title}</a>
             </div>
           </section>
-          <section>{listItems(item.title)}</section>
+          <section>{renderCards(item.title)}</section>
           <section>
-            <a href="/">
+            {addAnotherCard()}
+            <div
+              className="addCardBtn"
+              onClick={(e) => {
+                e.target.parentNode.firstElementChild.classList.remove("hide");
+                e.target.classList.add("hide");
+              }}
+            >
               <FontAwesomeIcon icon={faPlus} /> Add another card
-            </a>
+            </div>
           </section>
         </div>
       );
     });
   };
 
-  const listItems = (listTitle) => {
+  const renderCards = (listTitle) => {
     const cards = list.filter((item) => item.title === listTitle);
 
     return cards[0].cards.map((item) => {
@@ -113,10 +168,8 @@ export default function Board() {
     });
   };
 
-  console.log(prevList, prevAddList);
-
   return (
-    <div container className="boardWrapper">
+    <div className="boardWrapper">
       {renderList()}
       <div className="boardList">
         {addList.add ? (
@@ -126,7 +179,7 @@ export default function Board() {
             onClick={() =>
               setAddList({
                 add: true,
-                title: prevAddList ? prevAddList.title : '',
+                title: addList.title,
               })
             }
           >

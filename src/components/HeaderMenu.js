@@ -16,35 +16,35 @@ export default function HeaderMenu() {
     <div className="headerMenuWrapper">
       <Grid container className="topSection">
         <section className="topLeftSection">
-          <a>
+          <a href="/">
             <FontAwesomeIcon icon={faBars} />
           </a>
-          <a>Boards</a>
+          <a href="/">Boards</a>
         </section>
         <section className="topRightSection">
-          <a>
+          <a href="/">
             <FontAwesomeIcon icon={faPlus} />
           </a>
-          <a>
+          <a href="/">
             <FontAwesomeIcon icon={faInfoCircle} />
           </a>
-          <a>
+          <a href="/">
             <FontAwesomeIcon icon={faBell} />
           </a>
-          <a>Profile</a>
+          <a href="/">Profile</a>
         </section>
       </Grid>
       <Grid container className="bottomSection">
         <section className="botLeftSection">
-          <a>Board View</a>
-          <a>Board Name</a>
-          <a>
+          <a href="/">Board View</a>
+          <a href="/">Board Name</a>
+          <a href="/">
             <FontAwesomeIcon icon={faStar} />
           </a>
-          |<a>Some other options</a>
+          |<a href="/">Some other options</a>
         </section>
         <section className="botRightSection">
-          <a>
+          <a href="/">
             <FontAwesomeIcon icon={faEllipsisH} /> Show Menu
           </a>
         </section>

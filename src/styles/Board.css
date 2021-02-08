@@ -1,7 +1,8 @@
 .boardWrapper {
   padding-top: 20vh;
   height: 100vh;
-  overflow-x: scroll;
+  overflow-x: auto;
+  display: flex;
 }
 
 .boardWrapper:active {

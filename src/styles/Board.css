@@ -1,5 +1,11 @@
 .boardWrapper {
   padding-top: 20vh;
+  height: 100vh;
+  overflow-x: scroll;
+}
+
+.boardWrapper:active {
+  cursor: grabbing;
 }
 
 a {
@@ -8,6 +14,7 @@ a {
 
 .boardList {
   width: 18rem;
+  height: fit-content;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(1.5px);
   margin: 0 0.75rem 0 0.75rem;
@@ -44,4 +51,24 @@ a {
   text-align: center;
   font-weight: 600;
   font-size: 1.5rem;
+}
+
+.addList {
+  display: flex;
+  flex-direction: column;
+}
+
+.addList > input {
+  height: 1.5rem;
+}
+
+.addList > div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.xBtn {
+  font-size: 2rem;
+  vertical-align: middle;
 }

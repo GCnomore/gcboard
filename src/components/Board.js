@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
-import Card from './Card';
+import React, { useState } from "react";
+import { AddAnotherList } from "./api/AddAnotherList";
 
-import Grid from '@material-ui/core/Grid';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
-import '../styles/Board.css';
+import Grid from "@material-ui/core/Grid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisH, faPlus } from "@fortawesome/free-solid-svg-icons";
+import "../styles/Board.css";
 
 export default function Board() {
   const [list, setList] = useState([
     {
-      title: 'Sample',
+      title: "Sample",
       cards: [
         {
-          title: 'Sample Card',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
         },
         {
-          title: 'Sample Card2',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
         },
       ],
     },
   ]);
+  const [addList, setAddList] = useState(false);
+
   const renderList = () => {
     return list.map((item) => {
       return (
@@ -64,10 +66,14 @@ export default function Board() {
   return (
     <Grid container className="boardWrapper">
       {renderList()}
-      <div className="addList">
-        <a>
-          <FontAwesomeIcon icon={faPlus} /> Add another list
-        </a>
+      <div className="boardList">
+        {addList ? (
+          <AddAnotherList setAddList={setAddList} />
+        ) : (
+          <a onClick={() => setAddList(true)}>
+            <FontAwesomeIcon icon={faPlus} /> Add another list
+          </a>
+        )}
       </div>
     </Grid>
   );

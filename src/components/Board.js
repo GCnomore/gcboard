@@ -1,73 +1,78 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
-import Button from "@material-ui/core/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from '@material-ui/core/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEllipsisH,
   faPlus,
   faTimes,
-} from "@fortawesome/free-solid-svg-icons";
-import "../styles/Board.css";
+} from '@fortawesome/free-solid-svg-icons';
+import '../styles/Board.css';
+import { grabAndSlide } from './api/api';
 
 export default function Board() {
-  const [list, setList] = useState([
+  const [currentList, setList] = useState([
     {
-      title: "Sample",
+      title: 'Sample',
       cards: [
         {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          activities: "Isaac added this card to Sample",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
+          title: 'Sample Card',
+          description: 'Enter the description for this card',
+          activities: 'Isaac added this card to Sample',
+          comments: 'First comment',
+          timeStamp: 'Feb 3, 2021 9:55 AM',
         },
         {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          activities: "Isaac added this card to Sample",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
+          title: 'Sample Card2',
+          description: 'Enter the description for this card',
+          activities: 'Isaac added this card to Sample',
+          comments: 'First comment',
+          timeStamp: 'Feb 3, 2021 9:55 AM',
         },
       ],
     },
     {
-      title: "Sample2",
+      title: 'Sample2',
       cards: [
         {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          activities: "Isaac added this card to Sample",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
+          title: 'Sample Card',
+          description: 'Enter the description for this card',
+          activities: 'Isaac added this card to Sample',
+          comments: 'First comment',
+          timeStamp: 'Feb 3, 2021 9:55 AM',
         },
         {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          activities: "Isaac added this card to Sample",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
+          title: 'Sample Card2',
+          description: 'Enter the description for this card',
+          activities: 'Isaac added this card to Sample',
+          comments: 'First comment',
+          timeStamp: 'Feb 3, 2021 9:55 AM',
         },
         {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          activities: "Isaac added this card to Sample",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
+          title: 'Sample Card2',
+          description: 'Enter the description for this card',
+          activities: 'Isaac added this card to Sample',
+          comments: 'First comment',
+          timeStamp: 'Feb 3, 2021 9:55 AM',
         },
       ],
     },
   ]);
   const [addList, setAddList] = useState({
     add: false,
-    title: "",
+    title: '',
   });
-  const [newCard, setNewCard] = useState();
+  const [card, setCard] = useState();
 
   const ref = useRef();
   useEffect(() => {
     ref.current = addList;
   }, [addList]);
   const prevAddList = ref.current;
+
+  useEffect(() => {
+    grabAndSlide('boardWrapper');
+  }, [currentList]);
 
   const renderAddList = () => {
     return (
@@ -84,7 +89,7 @@ export default function Board() {
             onClick={(e) => {
               e.preventDefault();
               setList([
-                ...list,
+                ...currentList,
                 {
                   title: addList.title,
                   cards: [],
@@ -109,9 +114,10 @@ export default function Board() {
     return (
       <div className="addCard hide">
         <input
+          value={card}
           placeholder="Enter card title"
           onChange={(e) => {
-            setNewCard(e.target.value);
+            setCard(e.target.value);
           }}
         />
         <div>
@@ -122,7 +128,7 @@ export default function Board() {
               const container =
                 e.target.parentNode.parentNode.parentNode.parentNode
                   .lastElementChild;
-              container.classList.remove("hide");
+              container.classList.remove('hide');
               const listTitle =
                 container.parentNode.parentNode.firstElementChild
                   .lastElementChild.firstElementChild.innerText;
@@ -145,11 +151,11 @@ export default function Board() {
                   .firstElementChild;
 
               if (
-                container.classList[0] === "addCardBtn" &&
-                _container.classList[0] === "addCard"
+                container.classList[0] === 'addCardBtn' &&
+                _container.classList[0] === 'addCard'
               ) {
-                container.classList.remove("hide");
-                _container.classList.add("hide");
+                container.classList.remove('hide');
+                _container.classList.add('hide');
               }
             }}
           />
@@ -159,7 +165,7 @@ export default function Board() {
   };
 
   const renderList = () => {
-    return list.map((item) => {
+    return currentList.map((item) => {
       return (
         <div className="boardList">
           <section className="listHeader">
@@ -178,8 +184,8 @@ export default function Board() {
             <div
               className="addCardBtn"
               onClick={(e) => {
-                e.target.parentNode.firstElementChild.classList.remove("hide");
-                e.target.classList.add("hide");
+                e.target.parentNode.firstElementChild.classList.remove('hide');
+                e.target.classList.add('hide');
               }}
             >
               <FontAwesomeIcon icon={faPlus} /> Add another card
@@ -191,17 +197,31 @@ export default function Board() {
   };
 
   const renderCards = (listTitle) => {
-    const cards = list.filter((item) => item.title === listTitle);
+    const cards = currentList.filter((item) => item.title === listTitle);
 
     return cards[0].cards.map((item) => {
-      return <div className="listItems">{item.title}</div>;
+      return (
+        <div className="listItems" onClick={(e) => console.log(item)}>
+          {item.title}
+        </div>
+      );
     });
   };
 
   const addCard = (listTitle) => {
-    //newCard == card title
-    const targetList = list.filter((item) => item.title === listTitle);
-    setList();
+    const newCard = {
+      title: card,
+      timeStamp: new Date(),
+      description: '',
+      comments: '',
+      activities: '',
+    };
+    const list = currentList.find((item) => item.title === listTitle);
+    list.cards = [...list.cards, newCard];
+    const newList = [...currentList];
+
+    setList(newList);
+    setCard('');
   };
 
   return (

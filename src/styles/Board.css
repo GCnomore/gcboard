@@ -82,3 +82,13 @@ a {
   font-size: 2rem;
   vertical-align: middle;
 }
+
+button {
+  padding: 0 !important;
+}
+
+button > span:first-child {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+}

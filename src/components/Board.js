@@ -30,12 +30,38 @@ export default function Board() {
         },
       ],
     },
+    {
+      title: "Sample2",
+      cards: [
+        {
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+        },
+      ],
+    },
   ]);
   const [addList, setAddList] = useState({
     add: false,
     title: "",
   });
-  const [addCard, setAddCard] = useState(false);
+  const [newCard, setNewCard] = useState();
 
   const ref = useRef();
   useEffect(() => {
@@ -43,7 +69,7 @@ export default function Board() {
   }, [addList]);
   const prevAddList = ref.current;
 
-  const addAnotherList = () => {
+  const renderAddList = () => {
     return (
       <div className="addList">
         <input
@@ -79,13 +105,13 @@ export default function Board() {
     );
   };
 
-  const addAnotherCard = () => {
+  const renderAddCard = () => {
     return (
       <div className="addCard hide">
         <input
           placeholder="Enter card title"
           onChange={(e) => {
-            setAddList(prevAddList.cards.push({ title: e.target.value }));
+            setNewCard(e.target.value);
           }}
         />
         <div>
@@ -93,11 +119,15 @@ export default function Board() {
             variant="contained"
             onClick={(e) => {
               e.preventDefault();
-
               const container =
                 e.target.parentNode.parentNode.parentNode.parentNode
                   .lastElementChild;
               container.classList.remove("hide");
+              const listTitle =
+                container.parentNode.parentNode.firstElementChild
+                  .lastElementChild.firstElementChild.innerText;
+              console.log(listTitle);
+              addCard(listTitle);
             }}
           >
             Add
@@ -144,7 +174,7 @@ export default function Board() {
           </section>
           <section>{renderCards(item.title)}</section>
           <section>
-            {addAnotherCard()}
+            {renderAddCard()}
             <div
               className="addCardBtn"
               onClick={(e) => {
@@ -168,12 +198,18 @@ export default function Board() {
     });
   };
 
+  const addCard = (listTitle) => {
+    //newCard == card title
+    const targetList = list.filter((item) => item.title === listTitle);
+    setList();
+  };
+
   return (
     <div className="boardWrapper">
       {renderList()}
       <div className="boardList">
         {addList.add ? (
-          addAnotherList()
+          renderAddList()
         ) : (
           <div
             onClick={() =>

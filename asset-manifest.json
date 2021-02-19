@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/gcboard/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/gcboard/static/js/main.6448c55e.chunk.js",
+    "main.js.map": "/gcboard/static/js/main.6448c55e.chunk.js.map",
+    "runtime-main.js": "/gcboard/static/js/runtime-main.7d6cd829.js",
+    "runtime-main.js.map": "/gcboard/static/js/runtime-main.7d6cd829.js.map",
+    "static/js/2.7c69ee18.chunk.js": "/gcboard/static/js/2.7c69ee18.chunk.js",
+    "static/js/2.7c69ee18.chunk.js.map": "/gcboard/static/js/2.7c69ee18.chunk.js.map",
+    "index.html": "/gcboard/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "/gcboard/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.7c69ee18.chunk.js.LICENSE.txt": "/gcboard/static/js/2.7c69ee18.chunk.js.LICENSE.txt",
+    "static/media/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.7cf2f367.jpg": "/gcboard/static/media/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.7cf2f367.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7d6cd829.js",
+    "static/js/2.7c69ee18.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.6448c55e.chunk.js"
+  ]
+}

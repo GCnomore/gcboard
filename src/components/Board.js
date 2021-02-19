@@ -1,82 +1,95 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from "react";
+import Cards from "./Cards";
+import { grabAndSlide } from "./api/api";
 
-import Button from '@material-ui/core/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEllipsisH,
   faPlus,
   faTimes,
-} from '@fortawesome/free-solid-svg-icons';
-import '../styles/Board.css';
-import { grabAndSlide } from './api/api';
+} from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 export default function Board() {
   const [currentList, setList] = useState([
     {
-      title: 'Sample',
+      title: "Sample",
       cards: [
         {
-          title: 'Sample Card',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
         },
         {
-          title: 'Sample Card2',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
         },
       ],
     },
     {
-      title: 'Sample2',
+      title: "Sample2",
       cards: [
         {
-          title: 'Sample Card',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
         },
         {
-          title: 'Sample Card2',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
         },
         {
-          title: 'Sample Card2',
-          description: 'Enter the description for this card',
-          activities: 'Isaac added this card to Sample',
-          comments: 'First comment',
-          timeStamp: 'Feb 3, 2021 9:55 AM',
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          activities: "Isaac added this card to Sample",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
         },
       ],
     },
   ]);
   const [addList, setAddList] = useState({
     add: false,
-    title: '',
+    title: "",
   });
-  const [card, setCard] = useState();
+  const [card, setCard] = useState("");
+  const [open, setOpen] = useState(false);
+  const [editCard, setEditCard] = useState();
+  const [showAddCard, setShowAddCard] = useState({ id: null, show: false });
 
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = addList;
-  }, [addList]);
-  const prevAddList = ref.current;
+  const handleModalOpen = (item, title) => {
+    setOpen(true);
+    setEditCard({ data: item, title });
+  };
+
+  const handleModalClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
-    grabAndSlide('boardWrapper');
-  }, [currentList]);
+    grabAndSlide("boardWrapper");
+  }, []);
 
   const renderAddList = () => {
     return (
-      <div className="addList">
+      <AddList>
         <input
           placeholder="Enter list title"
           onChange={(e) => {
@@ -100,19 +113,23 @@ export default function Board() {
           >
             Add
           </Button>
-          <FontAwesomeIcon
-            className="xBtn"
-            icon={faTimes}
-            onClick={() => setAddList({ add: false, title: prevAddList.title })}
-          />
+          <XButton>
+            <FontAwesomeIcon
+              icon={faTimes}
+              onClick={() => {
+                setAddList({ add: false, title: "" });
+              }}
+            />
+          </XButton>
         </div>
-      </div>
+      </AddList>
     );
   };
 
-  const renderAddCard = () => {
+  const renderAddCard = (i, title) => {
+    const show = showAddCard.id === i ? showAddCard.show : false;
     return (
-      <div className="addCard hide">
+      <AddCard show={show}>
         <input
           value={card}
           placeholder="Enter card title"
@@ -123,75 +140,58 @@ export default function Board() {
         <div>
           <Button
             variant="contained"
-            onClick={(e) => {
-              e.preventDefault();
-              const container =
-                e.target.parentNode.parentNode.parentNode.parentNode
-                  .lastElementChild;
-              container.classList.remove('hide');
-              const listTitle =
-                container.parentNode.parentNode.firstElementChild
-                  .lastElementChild.firstElementChild.innerText;
-              console.log(listTitle);
-              addCard(listTitle);
+            onClick={() => {
+              addCard(title);
             }}
           >
             Add
           </Button>
-          <FontAwesomeIcon
-            className="xBtn"
-            icon={faTimes}
-            onClick={(e) => {
-              const container =
-                e.target.parentNode.parentNode.parentNode.parentNode
-                  .lastElementChild;
-
-              const _container =
-                e.target.parentNode.parentNode.parentNode.parentNode
-                  .firstElementChild;
-
-              if (
-                container.classList[0] === 'addCardBtn' &&
-                _container.classList[0] === 'addCard'
-              ) {
-                container.classList.remove('hide');
-                _container.classList.add('hide');
-              }
-            }}
-          />
+          <XButton>
+            <FontAwesomeIcon
+              icon={faTimes}
+              onClick={(e) => {
+                if (i === showAddCard.id) {
+                  setShowAddCard({
+                    id: i,
+                    show: false,
+                  });
+                }
+              }}
+            />
+          </XButton>
         </div>
-      </div>
+      </AddCard>
     );
   };
 
   const renderList = () => {
-    return currentList.map((item) => {
+    return currentList.map((item, i) => {
+      const show = showAddCard.id === i ? !showAddCard.show : true;
       return (
-        <div className="boardList">
-          <section className="listHeader">
-            <div className="listMenu">
+        <BoardList key={i}>
+          <ListHeader>
+            <div>
               <a href="/">
                 <FontAwesomeIcon icon={faEllipsisH} />
               </a>
             </div>
-            <div className="listTitle">
+            <ListTitle>
               <a href="/">{item.title}</a>
-            </div>
-          </section>
+            </ListTitle>
+          </ListHeader>
           <section>{renderCards(item.title)}</section>
           <section>
-            {renderAddCard()}
-            <div
-              className="addCardBtn"
+            {renderAddCard(i, item.title)}
+            <AddAnotherCard
+              show={show}
               onClick={(e) => {
-                e.target.parentNode.firstElementChild.classList.remove('hide');
-                e.target.classList.add('hide');
+                setShowAddCard({ id: i, show: true });
               }}
             >
               <FontAwesomeIcon icon={faPlus} /> Add another card
-            </div>
+            </AddAnotherCard>
           </section>
-        </div>
+        </BoardList>
       );
     });
   };
@@ -199,35 +199,61 @@ export default function Board() {
   const renderCards = (listTitle) => {
     const cards = currentList.filter((item) => item.title === listTitle);
 
-    return cards[0].cards.map((item) => {
+    return cards[0].cards.map((item, i) => {
       return (
-        <div className="listItems" onClick={(e) => console.log(item)}>
+        <ListItems
+          key={i}
+          onClick={() => {
+            handleModalOpen(item, cards[0].title);
+            item.show = true;
+            setList([...currentList]);
+          }}
+        >
           {item.title}
-        </div>
+        </ListItems>
       );
     });
   };
 
-  const addCard = (listTitle) => {
+  const addCard = (title) => {
     const newCard = {
       title: card,
       timeStamp: new Date(),
-      description: '',
-      comments: '',
-      activities: '',
+      description: "",
+      comments: "",
+      activities: "",
+      show: false,
     };
-    const list = currentList.find((item) => item.title === listTitle);
+    const list = currentList.find((item) => item.title === title);
     list.cards = [...list.cards, newCard];
     const newList = [...currentList];
 
     setList(newList);
-    setCard('');
+    setCard("");
+  };
+
+  const renderEditCard = () => {
+    if (editCard) {
+      return (
+        <Modal
+          open={open}
+          onClose={handleModalClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <Cards data={editCard} />
+        </Modal>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
-    <div className="boardWrapper">
+    <BoardWrapper className="boardWrapper">
+      {renderEditCard()}
       {renderList()}
-      <div className="boardList">
+      <AddAnotherList>
         {addList.add ? (
           renderAddList()
         ) : (
@@ -242,7 +268,108 @@ export default function Board() {
             <FontAwesomeIcon icon={faPlus} /> Add another list
           </div>
         )}
-      </div>
-    </div>
+      </AddAnotherList>
+    </BoardWrapper>
   );
 }
+
+/*
+
+
+
+
+Styles
+
+
+
+
+
+*/
+
+const BoardWrapper = styled.div`
+  padding-top: 20vh;
+  height: 80vh;
+  overflow-x: auto;
+  display: flex;
+  &:active {
+    cursor: grabbing;
+  }
+`;
+
+const BoardList = styled.div`
+  min-width: 18rem;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  margin: 0 0.75rem 0 0.75rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 500;
+`;
+
+const AddAnotherList = styled(BoardList)``;
+
+const ListItems = styled.div`
+  padding: 0.5rem;
+  margin: 0.75rem 0 0.75rem 0;
+  background-color: rgba(102, 101, 99, 0.568);
+  backdrop-filter: blur(1.5px);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    filter: brightness(70%);
+    transition: 0.75s;
+  }
+`;
+
+const ListHeader = styled.div`
+  height: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  > div > a {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+`;
+
+const ListTitle = styled.div`
+  height: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  > a {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+`;
+
+const AddList = styled.div`
+  display: flex;
+  flex-direction: column;
+  > input {
+    height: 1.5rem;
+  }
+  > div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+`;
+
+const AddCard = styled(AddList)`
+  display: ${(props) => (props.show ? "flex" : "none")};
+`;
+
+const XButton = styled.div`
+  font-size: 2rem;
+  vertical-align: middle;
+`;
+
+const AddAnotherCard = styled.div`
+  display: ${(props) => (props.show ? "flex" : "none")};
+`;

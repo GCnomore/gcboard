@@ -1,5 +1,5 @@
-import Grid from '@material-ui/core/Grid';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Grid from "@material-ui/core/Grid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faPlus,
@@ -7,48 +7,83 @@ import {
   faBell,
   faStar,
   faEllipsisH,
-} from '@fortawesome/free-solid-svg-icons';
-
-import '../styles/HeaderMenu.css';
+} from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 export default function HeaderMenu() {
   return (
-    <div className="headerMenuWrapper">
-      <Grid container className="topSection">
-        <section className="topLeftSection">
-          <a href="/">
+    <HeaderMenuWrapper>
+      <Grid container>
+        <TopLeftSection>
+          <MenuItem href="/">
             <FontAwesomeIcon icon={faBars} />
-          </a>
-          <a href="/">Boards</a>
-        </section>
-        <section className="topRightSection">
-          <a href="/">
+          </MenuItem>
+          <MenuItem href="/">Boards</MenuItem>
+        </TopLeftSection>
+        <section>
+          <MenuItem href="/">
             <FontAwesomeIcon icon={faPlus} />
-          </a>
-          <a href="/">
+          </MenuItem>
+          <MenuItem href="/">
             <FontAwesomeIcon icon={faInfoCircle} />
-          </a>
-          <a href="/">
+          </MenuItem>
+          <MenuItem href="/">
             <FontAwesomeIcon icon={faBell} />
-          </a>
-          <a href="/">Profile</a>
+          </MenuItem>
+          <MenuItem href="/">Profile</MenuItem>
         </section>
       </Grid>
-      <Grid container className="bottomSection">
-        <section className="botLeftSection">
-          <a href="/">Board View</a>
-          <a href="/">Board Name</a>
-          <a href="/">
+      <Grid container>
+        <section>
+          <MenuItem href="/">Board View</MenuItem>
+          <MenuItem href="/">Board Name</MenuItem>
+          <MenuItem href="/">
             <FontAwesomeIcon icon={faStar} />
-          </a>
-          |<a href="/">Some other options</a>
+          </MenuItem>
+          |<MenuItem href="/">Some other options</MenuItem>
         </section>
-        <section className="botRightSection">
-          <a href="/">
+        <section>
+          <MenuItem href="/">
             <FontAwesomeIcon icon={faEllipsisH} /> Show Menu
-          </a>
+          </MenuItem>
         </section>
       </Grid>
-    </div>
+    </HeaderMenuWrapper>
   );
 }
+
+const HeaderMenuWrapper = styled.div`
+  width: 100vw;
+  position: fixed;
+  margin-top: 1rem;
+  > div {
+    justify-content: space-between;
+  }
+  > :nth-child(2) {
+    margin-top: 1rem;
+  }
+`;
+
+const TopLeftSection = styled.div`
+  margin: 0 0.25rem 0.5rem 0.25rem;
+`;
+
+const MenuItem = styled.a`
+  margin: 0 0.25rem 0 0.25rem;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  color: #fff;
+  font-weight: 500;
+  transition: 0.25s;
+  &:hover {
+    opacity: 0.7;
+    transition: 0.25s;
+    cursor: pointer;
+  }
+  &:active {
+    background-color: #1c1c1b;
+    opacity: 1;
+  }
+`;

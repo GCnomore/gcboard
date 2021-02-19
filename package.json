@@ -1,7 +1,7 @@
 {
   "name": "gcboard",
   "version": "0.1.0",
-  "homepage": "https://gcnomore.github.io/gcboard",
+  "homepage": "http://gcnomore.github.io/gcboard",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",

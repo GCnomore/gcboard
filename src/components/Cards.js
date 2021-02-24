@@ -3,16 +3,16 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import styled from "styled-components";
 
-export default function Cards({ data }) {
-  console.log(data);
+export default function Cards({ cardData }) {
+  console.log(cardData);
   return (
     <CardsContainer>
       <CardHeader>
         <div>
-          <h1>{data.data.title}</h1>
+          <h1>{cardData.data.title}</h1>
           <FontAwesomeIcon icon={faTimes} />
         </div>
-        <div>in list {data.title}</div>
+        <div>in list {cardData.title}</div>
       </CardHeader>
       <CardContentWrapper>
         <CardContentLeft>
@@ -22,21 +22,28 @@ export default function Cards({ data }) {
               <MenuItem>Edit</MenuItem>
             </div>
             <div>
-              {data.data.description ? (
-                <div>{data.data.description}</div>
+              {cardData.data.description ? (
+                <div>{cardData.data.description}</div>
               ) : (
                 <CardInput></CardInput>
               )}
             </div>
           </Description>
-          <Activities>
+          <CommentsContainer>
             <div>
-              <h2>Activity</h2>
+              <h2>Comments</h2>
               <MenuItem>Show Details</MenuItem>
             </div>
-            {data.data.activities ? <div>{data.data.activities}</div> : null}
+            <Comments>
+              {cardData.data.comments ? (
+                <>
+                  <span>{cardData.data.comments}</span>
+                  <TimeStamp>{cardData.data.timeStamp}</TimeStamp>
+                </>
+              ) : null}
+            </Comments>
             <CardInput></CardInput>
-          </Activities>
+          </CommentsContainer>
         </CardContentLeft>
         <CardContentRight>
           <div className="addToCard">
@@ -125,7 +132,7 @@ const CardContentRight = styled.div`
     box-shadow: 0px 0px 70px 40px rgba(225, 225, 225, 0.1);
   }
 `;
-const Activities = styled(Description)`
+const CommentsContainer = styled(Description)`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
@@ -136,6 +143,16 @@ const Activities = styled(Description)`
     height: fit-content;
     padding: 0.1rem 0 !important;
   }
+`;
+
+const Comments = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const TimeStamp = styled.span`
+  margin-left: 1rem;
+  font-size: 0.8rem;
 `;
 
 const CardInput = styled.input`

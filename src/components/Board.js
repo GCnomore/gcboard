@@ -60,6 +60,136 @@ export default function Board() {
         },
       ],
     },
+    {
+      title: "Sample3",
+      cards: [
+        {
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+      ],
+    },
+    {
+      title: "Sample4",
+      cards: [
+        {
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+      ],
+    },
+    {
+      title: "Sample5",
+      cards: [
+        {
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+      ],
+    },
+    {
+      title: "Sample6",
+      cards: [
+        {
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+      ],
+    },
+    {
+      title: "Sample7",
+      cards: [
+        {
+          title: "Sample Card",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+        {
+          title: "Sample Card2",
+          description: "Enter the description for this card",
+          comments: "First comment",
+          timeStamp: "Feb 3, 2021 9:55 AM",
+          show: false,
+        },
+      ],
+    },
   ];
 
   useEffect(() => {

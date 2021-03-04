@@ -8,7 +8,7 @@ import {
   faStar,
   faEllipsisH,
 } from "@fortawesome/free-solid-svg-icons";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export default function HeaderMenu() {
   return (

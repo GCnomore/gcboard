@@ -1,198 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Cards from "./Cards";
 import Lists from "./Lists";
-import { grabAndSlide } from "./api/api";
+import { grabAndSlide } from "../api/api";
 
 import Modal from "@material-ui/core/Modal";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export default function Board() {
   const [editCard, setEditCard] = useState();
   const [open, setOpen] = useState(false);
-  const [addList, setAddList] = useState({
-    add: false,
-    title: "",
-  });
-
-  const listData = [
-    {
-      title: "Sample",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-    {
-      title: "Sample2",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-    {
-      title: "Sample3",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-    {
-      title: "Sample4",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-    {
-      title: "Sample5",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-    {
-      title: "Sample6",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-    {
-      title: "Sample7",
-      cards: [
-        {
-          title: "Sample Card",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-        {
-          title: "Sample Card2",
-          description: "Enter the description for this card",
-          comments: "First comment",
-          timeStamp: "Feb 3, 2021 9:55 AM",
-          show: false,
-        },
-      ],
-    },
-  ];
+  const listData = localStorage.getItem("data")
+    ? JSON.parse(localStorage.getItem("data"))
+    : [];
 
   useEffect(() => {
+    document.addEventListener(
+      "keydown",
+      (e) => e.code === "Escape" && setOpen(false)
+    );
     grabAndSlide("boardWrapper");
   }, []);
 
@@ -255,22 +80,4 @@ const BoardWrapper = styled.div`
   &:active {
     cursor: grabbing;
   }
-`;
-
-const AddList = styled.div`
-  display: flex;
-  flex-direction: column;
-  > input {
-    height: 1.5rem;
-  }
-  > div {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-  }
-`;
-
-const XButton = styled.div`
-  font-size: 2rem;
-  vertical-align: middle;
 `;

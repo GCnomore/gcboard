@@ -16,6 +16,7 @@ const ACTIONS = {
   ADD_CARD: "addCard",
   ADD_LIST: "addList",
   SHOW_MODAL: "showModal",
+  CURRENT_BOARD: "currentBoard",
 };
 
 function reducer(state, action) {
@@ -47,6 +48,11 @@ function reducer(state, action) {
           message: action.payload.message,
         },
       };
+    case ACTIONS.CURRENT_BOARD:
+      return {
+        ...state,
+        currentBoard: action.payload.newBoard,
+      };
   }
 }
 
@@ -66,15 +72,16 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
       title: "",
     },
     showModal: { show: false, message: "" },
+    currentBoard: data[0],
   });
   const [card, setCard] = useState("");
   const [currentBoard, setCurrentBoard] = useState(data[0]);
-  const { lists } = currentBoard;
+  const { lists } = state.currentBoard;
   console.log(data);
 
   useEffect(() => {
-    localStorage.setItem("data", JSON.stringify(currentBoard));
-  }, [currentBoard]);
+    localStorage.setItem("data", JSON.stringify(state.currentBoard));
+  }, [state.currentBoard]);
 
   const renderAddCard = (index, listTitle) => {
     const show = state.showAddCard
@@ -131,8 +138,6 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
             onClick={() => {
               setOpen(true);
               handleModalOpen(item, cards[0].title);
-              // // item.show = true;
-              // setCurrentBoard([...currentBoard]);
             }}
           >
             {item.title}
@@ -142,32 +147,6 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     } else {
       return null;
     }
-  };
-
-  const addCard = (listTitle) => {
-    const time =
-      new Date().getHours() > 12
-        ? `${new Date().getHours() - 12}:${new Date().getMinutes()}PM`
-        : `${new Date().getHours()}:${new Date().getMinutes()}AM`;
-    const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
-    const newCard = {
-      title: card,
-      timeStamp,
-      description: "",
-      comments: [
-        { text: `This card was created by Isaac`, created: timeStamp },
-      ],
-    };
-    const list = lists.find((item) => item.title === listTitle);
-    list.cards = [...list.cards, newCard];
-    const newList = [...lists];
-    const newBoard = {
-      name: currentBoard.name,
-      selected: currentBoard.selected,
-      lists: newList,
-    };
-    setCurrentBoard(newBoard);
-    setCard("");
   };
 
   const renderAddList = () => {
@@ -188,20 +167,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
             variant="contained"
             onClick={(e) => {
               e.preventDefault();
-              if (state.addList.title !== "") {
-                const newBoard = {
-                  name: currentBoard.name,
-                  selected: currentBoard.selected,
-                  lists: lists
-                    ? [...lists, { title: state.addList.title, cards: [] }]
-                    : [{ title: state.addList.title, cards: [] }],
-                  type: currentBoard.type,
-                };
-                setCurrentBoard(newBoard);
-                dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
-              } else {
-                errorModalOpen("List must have title");
-              }
+              addList();
             }}
           >
             Add
@@ -226,15 +192,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
         <div
           className="listMenu"
           onClick={() => {
-            const updatedList = lists.filter(
-              (item) => item.title !== listTitle
-            );
-            setCurrentBoard({
-              name: currentBoard.name,
-              selected: currentBoard.selected,
-              lists: updatedList,
-              type: currentBoard.type,
-            });
+            deleteList(listTitle);
             dispatch({ type: ACTIONS.LIST_MENU, index });
           }}
         >
@@ -268,7 +226,66 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     );
   };
 
-  return currentBoard.length === 0 && currentBoard.lists.length === 0 ? (
+  const addCard = (listTitle) => {
+    const time =
+      new Date().getHours() > 12
+        ? `${new Date().getHours() - 12}:${new Date().getMinutes()}PM`
+        : `${new Date().getHours()}:${new Date().getMinutes()}AM`;
+    const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
+    const newCard = {
+      title: card,
+      timeStamp,
+      description: "",
+      comments: [
+        { text: `This card was created by Isaac`, created: timeStamp },
+      ],
+    };
+    const list = lists.find((item) => item.title === listTitle);
+    list.cards = [...list.cards, newCard];
+    const newList = [...lists];
+    const newBoard = {
+      name: state.currentBoard.name,
+      selected: state.currentBoard.selected,
+      lists: newList,
+    };
+    dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+    setCard("");
+  };
+
+  const addList = () => {
+    if (state.addList.title !== "") {
+      const newBoard = {
+        name: state.currentBoard.name,
+        selected: state.currentBoard.selected,
+        lists: lists
+          ? [...lists, { title: state.addList.title, cards: [] }]
+          : [{ title: state.addList.title, cards: [] }],
+        type: state.currentBoard.type,
+      };
+      // setCurrentBoard(newBoard);
+      dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+      dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
+    } else {
+      errorModalOpen("List must have title");
+    }
+  };
+
+  const deleteList = (listTitle) => {
+    const updatedList = lists.filter((item) => item.title !== listTitle);
+    const newBoard = {
+      name: state.currentBoard.name,
+      selected: state.currentBoard.selected,
+      lists: updatedList,
+      type: state.currentBoard.type,
+    };
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard },
+    });
+  };
+
+  return state.currentBoard.length === 0 &&
+    state.currentBoard.lists.length === 0 ? (
     <ListContainer>
       <div></div>
       <div>
@@ -295,7 +312,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     <ListContainer>
       {showErrorModal(state.showModal.message)}
       <div>
-        <h1>{currentBoard.name.toUpperCase()}</h1>
+        <h1>{state.currentBoard.name.toUpperCase()}</h1>
       </div>
       <div>
         {lists.map((item, index) => {

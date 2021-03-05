@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
 export default function NewBoard({ newBoard, setNewBoard, addNewBoard }) {
@@ -35,6 +36,7 @@ export default function NewBoard({ newBoard, setNewBoard, addNewBoard }) {
               selected: true,
               lists: [],
               type: "",
+              id: uuidv4(),
             });
           }}
         />

@@ -9,6 +9,7 @@ import Modal from "@material-ui/core/Modal";
 import styled from "styled-components/macro";
 
 export default function Board({ state, dispatch }) {
+  const activeBoard = state.currentBoard.find((board) => board.selected);
   const [editCard, setEditCard] = useState();
   const [open, setOpen] = useState(false);
   const [newBoard, setNewBoard] = useState({
@@ -16,15 +17,17 @@ export default function Board({ state, dispatch }) {
     selected: true,
     lists: [],
     type: "",
+    id: "",
   });
+  const [changeName, setChangeName] = useState({ name: "", show: false });
 
   useEffect(() => {
-    document.addEventListener(
-      "keydown",
-      (e) => e.code === "Escape" && setOpen(false)
-    );
+    document.addEventListener("keydown", (e) => {
+      e.key === "Escape" && setOpen(false);
+      e.key === "Escape" && setChangeName({ name: "", show: false });
+    });
     grabAndSlide("boardWrapper");
-  }, []);
+  }, [changeName]);
 
   const handleModalOpen = (cardData, cardTitle) => {
     setOpen(true);
@@ -60,6 +63,13 @@ export default function Board({ state, dispatch }) {
         });
   };
 
+  const changeBoardName = () => {
+    activeBoard.name = changeName.name;
+    const newBoard = state.currentBoard;
+    dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+    setChangeName({ name: changeName.name, show: false });
+  };
+
   return (
     <BoardWrapper className="boardWrapper">
       {state.currentBoard.length === 0 ? (
@@ -72,6 +82,27 @@ export default function Board({ state, dispatch }) {
         </>
       ) : (
         <>
+          <BoardTitle>
+            {changeName.show ? (
+              <input
+                placeholder={activeBoard.name}
+                onChange={(e) => {
+                  setChangeName({ name: e.target.value, show: true });
+                }}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && changeBoardName(e);
+                }}
+              ></input>
+            ) : (
+              <h1
+                onClick={() =>
+                  setChangeName({ name: changeName.name, show: true })
+                }
+              >
+                {activeBoard.name}
+              </h1>
+            )}
+          </BoardTitle>
           <Lists
             state={state}
             dispatch={dispatch}
@@ -104,5 +135,30 @@ const BoardWrapper = styled.div`
   display: flex;
   &:active {
     cursor: grabbing;
+  }
+`;
+
+const BoardTitle = styled.div`
+  position: absolute;
+  top: 17vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1.5px);
+  color: white;
+  height: 7vh;
+  > h1,
+  input {
+    font-size: 3rem;
+    margin: 0.5rem 0 0.5rem 0;
+    align-self: center;
+  }
+  > input {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    border: none;
+    color: white;
   }
 `;

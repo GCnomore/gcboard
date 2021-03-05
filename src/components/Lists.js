@@ -185,6 +185,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
       name: currentBoard[0].name,
       selected: currentBoard[0].selected,
       lists: newList,
+      id: currentBoard[0].id,
     };
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
@@ -202,6 +203,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
           ? [...lists, { title: state.addList.title, cards: [] }]
           : [{ title: state.addList.title, cards: [] }],
         type: currentBoard[0].type,
+        id: currentBoard[0].id,
       };
       dispatch({
         type: ACTIONS.CURRENT_BOARD,
@@ -220,6 +222,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
       selected: currentBoard[0].selected,
       lists: updatedList,
       type: currentBoard[0].type,
+      id: currentBoard[0].id,
     };
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
@@ -227,35 +230,9 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
     });
   };
 
-  return currentBoard[0].length === 0 && currentBoard[0].lists.length === 0 ? (
-    <ListContainer>
-      <div></div>
-      <div>
-        <AddAnotherList>
-          {state.addList.add ? (
-            renderAddList()
-          ) : (
-            <div
-              onClick={() =>
-                dispatch({
-                  type: ACTIONS.ADD_LIST,
-                  add: true,
-                  value: state.addList.title,
-                })
-              }
-            >
-              <FontAwesomeIcon icon={faPlus} /> Add a list
-            </div>
-          )}
-        </AddAnotherList>
-      </div>
-    </ListContainer>
-  ) : (
+  return (
     <ListContainer>
       {showErrorModal(state.showModal.message)}
-      <div>
-        <h1>{currentBoard[0].name.toUpperCase()}</h1>
-      </div>
       <div>
         {lists.map((item, index) => {
           const show =
@@ -320,30 +297,32 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
 }
 
 Lists.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      selected: PropTypes.bool.isRequired,
-      lists: PropTypes.arrayOf(
-        PropTypes.shape({
-          title: PropTypes.string.isRequired,
-          cards: PropTypes.arrayOf(
-            PropTypes.shape({
-              title: PropTypes.string.isRequired,
-              timeStamp: PropTypes.string.isRequired,
-              description: PropTypes.string,
-              comments: PropTypes.arrayOf(
-                PropTypes.shape({
-                  text: PropTypes.string.isRequired,
-                  created: PropTypes.string.isRequired,
-                })
-              ),
-            })
-          ),
-        })
-      ),
-    })
-  ),
+  state: PropTypes.shape({
+    addList: PropTypes.shape({
+      add: PropTypes.bool.isRequired,
+      title: PropTypes.string,
+    }).isRequired,
+    currentBoard: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        selected: PropTypes.bool.isRequired,
+        lists: PropTypes.array,
+      })
+    ),
+    listMenu: PropTypes.shape({
+      id: PropTypes.number,
+      show: PropTypes.bool.isRequired,
+    }).isRequired,
+    showAddCard: PropTypes.shape({
+      id: PropTypes.number,
+      show: PropTypes.bool.isRequired,
+    }).isRequired,
+    showModal: PropTypes.shape({
+      show: PropTypes.bool.isRequired,
+      message: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
   handleModalOpen: PropTypes.func.isRequired,
   setOpen: PropTypes.func.isRequired,
 };
@@ -365,17 +344,7 @@ const ListContainer = styled.div`
   width: 100%;
   height: fit-content;
   margin-top: 26vh;
-  > div:nth-child(1) {
-    position: absolute;
-    top: 13vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(1.5px);
-    color: white;
-  }
-  > div:nth-child(2) {
+  > div {
     display: flex;
   }
 `;

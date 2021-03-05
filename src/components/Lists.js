@@ -51,6 +51,7 @@ function reducer(state, action) {
 }
 
 export default function Lists({ data, handleModalOpen, setOpen }) {
+  console.log("data@@@@@@@@@@@@@@@@", data[0]);
   const [state, dispatch] = useReducer(reducer, {
     listMenu: {
       id: null,
@@ -67,8 +68,9 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     showModal: { show: false, message: "" },
   });
   const [card, setCard] = useState("");
-  const [currentBoard, setCurrentBoard] = useState(data);
+  const [currentBoard, setCurrentBoard] = useState(data[0]);
   const { lists } = currentBoard;
+  console.log(data);
 
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(currentBoard));
@@ -118,23 +120,28 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
   };
 
   const renderCards = (listTitle) => {
-    const cards = lists.filter((list) => list.title === listTitle);
+    if (lists.length !== 0) {
+      const cards = lists.filter((list) => list.title === listTitle);
+      console.log("cards@@@@", cards, "lists", lists);
 
-    return cards[0].cards.map((item, index) => {
-      return (
-        <ListItems
-          key={index}
-          onClick={() => {
-            setOpen(true);
-            handleModalOpen(item, cards[0].title);
-            // // item.show = true;
-            // setCurrentBoard([...currentBoard]);
-          }}
-        >
-          {item.title}
-        </ListItems>
-      );
-    });
+      return cards[0].cards.map((item, index) => {
+        return (
+          <ListItems
+            key={index}
+            onClick={() => {
+              setOpen(true);
+              handleModalOpen(item, cards[0].title);
+              // // item.show = true;
+              // setCurrentBoard([...currentBoard]);
+            }}
+          >
+            {item.title}
+          </ListItems>
+        );
+      });
+    } else {
+      return null;
+    }
   };
 
   const addCard = (listTitle) => {
@@ -185,7 +192,10 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
                 const newBoard = {
                   name: currentBoard.name,
                   selected: currentBoard.selected,
-                  lists: [...lists, { title: state.addList.title, cards: [] }],
+                  lists: lists
+                    ? [...lists, { title: state.addList.title, cards: [] }]
+                    : [{ title: state.addList.title, cards: [] }],
+                  type: currentBoard.type,
                 };
                 setCurrentBoard(newBoard);
                 dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
@@ -223,6 +233,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
               name: currentBoard.name,
               selected: currentBoard.selected,
               lists: updatedList,
+              type: currentBoard.type,
             });
             dispatch({ type: ACTIONS.LIST_MENU, index });
           }}
@@ -257,14 +268,36 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     );
   };
 
-  return (
+  return currentBoard.length === 0 && currentBoard.lists.length === 0 ? (
+    <ListContainer>
+      <div></div>
+      <div>
+        <AddAnotherList>
+          {state.addList.add ? (
+            renderAddList()
+          ) : (
+            <div
+              onClick={() =>
+                dispatch({
+                  type: ACTIONS.ADD_LIST,
+                  add: true,
+                  value: state.addList.title,
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faPlus} /> Add a list
+            </div>
+          )}
+        </AddAnotherList>
+      </div>
+    </ListContainer>
+  ) : (
     <ListContainer>
       {showErrorModal(state.showModal.message)}
       <div>
-        <h1>{data.name.toUpperCase()}</h1>
+        <h1>{currentBoard.name.toUpperCase()}</h1>
       </div>
       <div>
-        {console.log(lists)}
         {lists.map((item, index) => {
           const show =
             state.showAddCard.id === index ? !state.showAddCard.show : true;

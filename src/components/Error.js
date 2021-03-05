@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled, { keyframes } from "styled-components";
 
 export default function Error({ message }) {
@@ -7,6 +8,10 @@ export default function Error({ message }) {
     </ErrorContainer>
   );
 }
+
+Error.propTypes = {
+  message: PropTypes.string.isRequired,
+};
 
 const errorPopUp = keyframes`
    from{

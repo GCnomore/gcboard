@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -32,12 +33,6 @@ export default function Cards({ cardData }) {
     setCard(card);
     setDescription("");
   };
-
-  useEffect(() => {
-    return () => {
-      console.log("card");
-    };
-  }, []);
 
   return (
     <CardsContainer>
@@ -124,6 +119,23 @@ export default function Cards({ cardData }) {
     </CardsContainer>
   );
 }
+
+Cards.propTypes = {
+  cardData: PropTypes.shape({
+    data: PropTypes.shape({
+      comments: PropTypes.arrayOf(
+        PropTypes.shape({
+          text: PropTypes.string.isRequired,
+          created: PropTypes.string.isRequired,
+        })
+      ),
+      description: PropTypes.string,
+      timeStamp: PropTypes.string,
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+    cardTitle: PropTypes.string,
+  }),
+};
 
 const CardsContainer = styled.div`
   width: 60vw;

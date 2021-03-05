@@ -3,11 +3,12 @@ import Cards from "./Cards";
 import Lists from "./Lists";
 import NewBoard from "./NewBoard";
 import { grabAndSlide } from "../api/api";
+import { ACTIONS } from "../App";
 
 import Modal from "@material-ui/core/Modal";
 import styled from "styled-components/macro";
 
-export default function Board() {
+export default function Board({ state, dispatch }) {
   const [editCard, setEditCard] = useState();
   const [open, setOpen] = useState(false);
   const [newBoard, setNewBoard] = useState({
@@ -16,11 +17,6 @@ export default function Board() {
     lists: [],
     type: "",
   });
-  const [boards, setBoards] = useState(
-    localStorage.getItem("data")
-      ? [JSON.parse(localStorage.getItem("data"))]
-      : []
-  );
 
   useEffect(() => {
     document.addEventListener(
@@ -53,15 +49,20 @@ export default function Board() {
   };
 
   const addNewBoard = () => {
-    boards.length === 0
-      ? setBoards([newBoard])
-      : setBoards([...boards, newBoard]);
+    state.currentBoard.length === 0
+      ? dispatch({
+          type: ACTIONS.CURRENT_BOARD,
+          payload: { newBoard: [newBoard] },
+        })
+      : dispatch({
+          type: ACTIONS.CURRENT_BOARD,
+          payload: { newBoard: [...state.currentBoard, newBoard] },
+        });
   };
-  console.log("boards@@@@@", boards);
 
   return (
     <BoardWrapper className="boardWrapper">
-      {boards.length === 0 ? (
+      {state.currentBoard.length === 0 ? (
         <>
           <NewBoard
             newBoard={newBoard}
@@ -72,11 +73,12 @@ export default function Board() {
       ) : (
         <>
           <Lists
-            data={boards.filter((board) => board.selected)}
+            state={state}
+            dispatch={dispatch}
             handleModalOpen={handleModalOpen}
             setOpen={setOpen}
           />
-          {renderEditCard()}{" "}
+          {renderEditCard()}
         </>
       )}
     </BoardWrapper>

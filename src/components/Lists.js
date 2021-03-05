@@ -1,7 +1,9 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Error from "./Error";
+import PropTypes from "prop-types";
+import { ACTIONS } from "../App";
 
 import styled from "styled-components/macro";
 import {
@@ -11,77 +13,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "@material-ui/core/Modal";
 
-const ACTIONS = {
-  LIST_MENU: "listMenu",
-  ADD_CARD: "addCard",
-  ADD_LIST: "addList",
-  SHOW_MODAL: "showModal",
-  CURRENT_BOARD: "currentBoard",
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case ACTIONS.LIST_MENU:
-      return {
-        ...state,
-        listMenu: { id: action.index, show: !state.listMenu.show },
-      };
-
-    case ACTIONS.ADD_CARD:
-      return {
-        ...state,
-        showAddCard: { id: action.index, show: !state.showAddCard.show },
-      };
-    case ACTIONS.ADD_LIST:
-      return {
-        ...state,
-        addList: {
-          add: action.add,
-          title: action.value,
-        },
-      };
-    case ACTIONS.SHOW_MODAL:
-      return {
-        ...state,
-        showModal: {
-          show: action.payload.show,
-          message: action.payload.message,
-        },
-      };
-    case ACTIONS.CURRENT_BOARD:
-      return {
-        ...state,
-        currentBoard: action.payload.newBoard,
-      };
-  }
-}
-
-export default function Lists({ data, handleModalOpen, setOpen }) {
-  console.log("data@@@@@@@@@@@@@@@@", data[0]);
-  const [state, dispatch] = useReducer(reducer, {
-    listMenu: {
-      id: null,
-      show: false,
-    },
-    showAddCard: {
-      id: null,
-      show: false,
-    },
-    addList: {
-      add: false,
-      title: "",
-    },
-    showModal: { show: false, message: "" },
-    currentBoard: data[0],
-  });
+export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
+  const currentBoard = state.currentBoard.filter((board) => board.selected);
   const [card, setCard] = useState("");
-  const [currentBoard, setCurrentBoard] = useState(data[0]);
-  const { lists } = state.currentBoard;
-  console.log(data);
+  const { lists } = currentBoard[0];
 
   useEffect(() => {
-    localStorage.setItem("data", JSON.stringify(state.currentBoard));
-  }, [state.currentBoard]);
+    localStorage.setItem("data", JSON.stringify(currentBoard[0]));
+  }, [currentBoard]);
 
   const renderAddCard = (index, listTitle) => {
     const show = state.showAddCard
@@ -114,7 +53,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
           <XButton>
             <FontAwesomeIcon
               icon={faTimes}
-              onClick={(e) => {
+              onClick={() => {
                 if (index === state.showAddCard.id) {
                   dispatch({ type: ACTIONS.ADD_CARD, index });
                 }
@@ -129,7 +68,6 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
   const renderCards = (listTitle) => {
     if (lists.length !== 0) {
       const cards = lists.filter((list) => list.title === listTitle);
-      console.log("cards@@@@", cards, "lists", lists);
 
       return cards[0].cards.map((item, index) => {
         return (
@@ -244,26 +182,31 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     list.cards = [...list.cards, newCard];
     const newList = [...lists];
     const newBoard = {
-      name: state.currentBoard.name,
-      selected: state.currentBoard.selected,
+      name: currentBoard[0].name,
+      selected: currentBoard[0].selected,
       lists: newList,
     };
-    dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: [newBoard] },
+    });
     setCard("");
   };
 
   const addList = () => {
     if (state.addList.title !== "") {
       const newBoard = {
-        name: state.currentBoard.name,
-        selected: state.currentBoard.selected,
+        name: currentBoard[0].name,
+        selected: currentBoard[0].selected,
         lists: lists
           ? [...lists, { title: state.addList.title, cards: [] }]
           : [{ title: state.addList.title, cards: [] }],
-        type: state.currentBoard.type,
+        type: currentBoard[0].type,
       };
-      // setCurrentBoard(newBoard);
-      dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+      dispatch({
+        type: ACTIONS.CURRENT_BOARD,
+        payload: { newBoard: [newBoard] },
+      });
       dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
     } else {
       errorModalOpen("List must have title");
@@ -273,19 +216,18 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
   const deleteList = (listTitle) => {
     const updatedList = lists.filter((item) => item.title !== listTitle);
     const newBoard = {
-      name: state.currentBoard.name,
-      selected: state.currentBoard.selected,
+      name: currentBoard[0].name,
+      selected: currentBoard[0].selected,
       lists: updatedList,
-      type: state.currentBoard.type,
+      type: currentBoard[0].type,
     };
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
-      payload: { newBoard },
+      payload: { newBoard: [newBoard] },
     });
   };
 
-  return state.currentBoard.length === 0 &&
-    state.currentBoard.lists.length === 0 ? (
+  return currentBoard[0].length === 0 && currentBoard[0].lists.length === 0 ? (
     <ListContainer>
       <div></div>
       <div>
@@ -312,7 +254,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     <ListContainer>
       {showErrorModal(state.showModal.message)}
       <div>
-        <h1>{state.currentBoard.name.toUpperCase()}</h1>
+        <h1>{currentBoard[0].name.toUpperCase()}</h1>
       </div>
       <div>
         {lists.map((item, index) => {
@@ -376,6 +318,35 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
     </ListContainer>
   );
 }
+
+Lists.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      selected: PropTypes.bool.isRequired,
+      lists: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          cards: PropTypes.arrayOf(
+            PropTypes.shape({
+              title: PropTypes.string.isRequired,
+              timeStamp: PropTypes.string.isRequired,
+              description: PropTypes.string,
+              comments: PropTypes.arrayOf(
+                PropTypes.shape({
+                  text: PropTypes.string.isRequired,
+                  created: PropTypes.string.isRequired,
+                })
+              ),
+            })
+          ),
+        })
+      ),
+    })
+  ),
+  handleModalOpen: PropTypes.func.isRequired,
+  setOpen: PropTypes.func.isRequired,
+};
 
 /*
 

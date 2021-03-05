@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
+import Error from "./Error";
 
 import styled from "styled-components/macro";
 import {
@@ -8,11 +9,13 @@ import {
   faPlus,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+import Modal from "@material-ui/core/Modal";
 
 const ACTIONS = {
   LIST_MENU: "listMenu",
   ADD_CARD: "addCard",
   ADD_LIST: "addList",
+  SHOW_MODAL: "showModal",
 };
 
 function reducer(state, action) {
@@ -36,6 +39,14 @@ function reducer(state, action) {
           title: action.value,
         },
       };
+    case ACTIONS.SHOW_MODAL:
+      return {
+        ...state,
+        showModal: {
+          show: action.payload.show,
+          message: action.payload.message,
+        },
+      };
   }
 }
 
@@ -53,17 +64,15 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
       add: false,
       title: "",
     },
+    showModal: { show: false, message: "" },
   });
   const [card, setCard] = useState("");
   const [currentBoard, setCurrentBoard] = useState(data);
+  const { lists } = currentBoard;
 
   useEffect(() => {
-    saveDataLocal();
-  }, [currentBoard]);
-
-  const saveDataLocal = () => {
     localStorage.setItem("data", JSON.stringify(currentBoard));
-  };
+  }, [currentBoard]);
 
   const renderAddCard = (index, listTitle) => {
     const show = state.showAddCard
@@ -84,7 +93,11 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
           <Button
             variant="contained"
             onClick={() => {
-              addCard(listTitle);
+              if (card !== "") {
+                addCard(listTitle);
+              } else {
+                errorModalOpen("Card must have title");
+              }
             }}
           >
             Add
@@ -105,7 +118,7 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
   };
 
   const renderCards = (listTitle) => {
-    const cards = currentBoard.filter((item) => item.title === listTitle);
+    const cards = lists.filter((list) => list.title === listTitle);
 
     return cards[0].cards.map((item, index) => {
       return (
@@ -114,8 +127,8 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
           onClick={() => {
             setOpen(true);
             handleModalOpen(item, cards[0].title);
-            item.show = true;
-            setCurrentBoard([...currentBoard]);
+            // // item.show = true;
+            // setCurrentBoard([...currentBoard]);
           }}
         >
           {item.title}
@@ -137,13 +150,16 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
       comments: [
         { text: `This card was created by Isaac`, created: timeStamp },
       ],
-      show: false,
     };
-    const list = currentBoard.find((item) => item.title === listTitle);
+    const list = lists.find((item) => item.title === listTitle);
     list.cards = [...list.cards, newCard];
-    const newList = [...currentBoard];
-
-    setCurrentBoard(newList);
+    const newList = [...lists];
+    const newBoard = {
+      name: currentBoard.name,
+      selected: currentBoard.selected,
+      lists: newList,
+    };
+    setCurrentBoard(newBoard);
     setCard("");
   };
 
@@ -165,14 +181,17 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
             variant="contained"
             onClick={(e) => {
               e.preventDefault();
-              setCurrentBoard([
-                ...currentBoard,
-                {
-                  title: state.addList.title,
-                  cards: [],
-                },
-              ]);
-              dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
+              if (state.addList.title !== "") {
+                const newBoard = {
+                  name: currentBoard.name,
+                  selected: currentBoard.selected,
+                  lists: [...lists, { title: state.addList.title, cards: [] }],
+                };
+                setCurrentBoard(newBoard);
+                dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
+              } else {
+                errorModalOpen("List must have title");
+              }
             }}
           >
             Add
@@ -197,10 +216,14 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
         <div
           className="listMenu"
           onClick={() => {
-            const updatedList = currentBoard.filter(
+            const updatedList = lists.filter(
               (item) => item.title !== listTitle
             );
-            setCurrentBoard(updatedList);
+            setCurrentBoard({
+              name: currentBoard.name,
+              selected: currentBoard.selected,
+              lists: updatedList,
+            });
             dispatch({ type: ACTIONS.LIST_MENU, index });
           }}
         >
@@ -209,66 +232,98 @@ export default function Lists({ data, handleModalOpen, setOpen }) {
       </ListMenu>
     );
   };
+
+  const errorModalOpen = (message) => {
+    dispatch({ type: ACTIONS.SHOW_MODAL, payload: { show: true, message } });
+  };
+
+  const errorModalClose = () => {
+    dispatch({
+      type: ACTIONS.SHOW_MODAL,
+      payload: { show: false, message: "" },
+    });
+  };
+
+  const showErrorModal = (message) => {
+    return (
+      <Modal
+        open={state.showModal.show}
+        onClose={errorModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Error message={message} />
+      </Modal>
+    );
+  };
+
   return (
-    <>
-      {currentBoard.map((item, index) => {
-        const show =
-          state.showAddCard.id === index ? !state.showAddCard.show : true;
+    <ListContainer>
+      {showErrorModal(state.showModal.message)}
+      <div>
+        <h1>{data.name.toUpperCase()}</h1>
+      </div>
+      <div>
+        {console.log(lists)}
+        {lists.map((item, index) => {
+          const show =
+            state.showAddCard.id === index ? !state.showAddCard.show : true;
 
-        return (
-          <List key={index} className="list">
-            {state.listMenu
-              ? state.listMenu.id === index &&
-                state.listMenu.show &&
-                showListMenu(item.title, index)
-              : null}
-            <ListHeader>
-              <div
-                onClick={() => {
-                  dispatch({ type: ACTIONS.LIST_MENU, index });
-                }}
-              >
-                <FontAwesomeIcon icon={faEllipsisH} />
-              </div>
-              <ListTitle>
-                <a href="/">{item.title}</a>
-              </ListTitle>
-            </ListHeader>
+          return (
+            <List key={index} className="list">
+              {state.listMenu
+                ? state.listMenu.id === index &&
+                  state.listMenu.show &&
+                  showListMenu(item.title, index)
+                : null}
+              <ListHeader>
+                <div
+                  onClick={() => {
+                    dispatch({ type: ACTIONS.LIST_MENU, index });
+                  }}
+                >
+                  <FontAwesomeIcon icon={faEllipsisH} />
+                </div>
+                <ListTitle>
+                  <a href="/">{item.title}</a>
+                </ListTitle>
+              </ListHeader>
 
-            <section>{renderCards(item.title)}</section>
-            <section>
-              {renderAddCard(index, item.title)}
-              <AddAnotherCard
-                show={show}
-                onClick={(e) => {
-                  dispatch({ type: ACTIONS.ADD_CARD, index });
-                }}
-              >
-                <FontAwesomeIcon icon={faPlus} /> Add another card
-              </AddAnotherCard>
-            </section>
-          </List>
-        );
-      })}
-      <AddAnotherList>
-        {state.addList.add ? (
-          renderAddList()
-        ) : (
-          <div
-            onClick={() =>
-              dispatch({
-                type: ACTIONS.ADD_LIST,
-                add: true,
-                value: state.addList.title,
-              })
-            }
-          >
-            <FontAwesomeIcon icon={faPlus} />{" "}
-            {currentBoard.length !== 0 ? "Add Another List" : "Add a list"}
-          </div>
-        )}
-      </AddAnotherList>
-    </>
+              <section>{renderCards(item.title)}</section>
+              <section>
+                {renderAddCard(index, item.title)}
+                <AddAnotherCard
+                  show={show}
+                  onClick={(e) => {
+                    dispatch({ type: ACTIONS.ADD_CARD, index });
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlus} /> Add another card
+                </AddAnotherCard>
+              </section>
+            </List>
+          );
+        })}
+        <AddAnotherList>
+          {state.addList.add ? (
+            renderAddList()
+          ) : (
+            <div
+              onClick={() =>
+                dispatch({
+                  type: ACTIONS.ADD_LIST,
+                  add: true,
+                  value: state.addList.title,
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faPlus} />{" "}
+              {lists.length !== 0 ? "Add Another List" : "Add a list"}
+            </div>
+          )}
+        </AddAnotherList>
+      </div>
+    </ListContainer>
   );
 }
 
@@ -284,6 +339,25 @@ Styles
 
 
 */
+
+const ListContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  margin-top: 26vh;
+  > div:nth-child(1) {
+    position: absolute;
+    top: 13vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1.5px);
+    color: white;
+  }
+  > div:nth-child(2) {
+    display: flex;
+  }
+`;
 
 const List = styled.div`
   min-width: 18rem;

@@ -136,7 +136,7 @@ const CardsContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   color: white;
-  backdrop-filter: blur(15px) opacity(0.7);
+  backdrop-filter: blur(1rem) opacity(0.7);
 `;
 
 const CardHeader = styled.div`

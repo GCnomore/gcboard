@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Button from "@material-ui/core/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export function AddAnotherList(props) {
   const { setAddList } = props;
@@ -25,7 +25,7 @@ export function grabAndSlide(className) {
   let startX;
   let scrollLeft;
 
-  wrapper.addEventListener('mousemove', (e) => {
+  wrapper.addEventListener("mousemove", (e) => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - wrapper.offsetLeft;
@@ -33,17 +33,17 @@ export function grabAndSlide(className) {
     wrapper.scrollLeft = scrollLeft - slide;
   });
 
-  wrapper.addEventListener('mousedown', (e) => {
+  wrapper.addEventListener("mousedown", (e) => {
     isDown = true;
     startX = e.pageX - wrapper.offsetLeft;
     scrollLeft = wrapper.scrollLeft;
   });
 
-  wrapper.addEventListener('mouseup', () => {
+  wrapper.addEventListener("mouseup", () => {
     isDown = false;
   });
 
-  wrapper.addEventListener('mouseleave', () => {
+  wrapper.addEventListener("mouseleave", () => {
     isDown = false;
   });
 }

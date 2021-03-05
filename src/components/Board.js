@@ -9,7 +9,7 @@ import styled from "styled-components/macro";
 export default function Board() {
   const [editCard, setEditCard] = useState();
   const [open, setOpen] = useState(false);
-  const listData = localStorage.getItem("data")
+  const boards = localStorage.getItem("data")
     ? JSON.parse(localStorage.getItem("data"))
     : [];
 
@@ -31,26 +31,22 @@ export default function Board() {
   };
 
   const renderEditCard = () => {
-    if (editCard) {
-      return (
-        <Modal
-          open={open}
-          onClose={handleModalClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          <Cards cardData={editCard} />
-        </Modal>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <Modal
+        open={open}
+        onClose={handleModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Cards cardData={editCard} />
+      </Modal>
+    );
   };
 
   return (
     <BoardWrapper className="boardWrapper">
       <Lists
-        data={listData}
+        data={boards}
         handleModalOpen={handleModalOpen}
         setOpen={setOpen}
       />
@@ -73,8 +69,7 @@ Styles
 */
 
 const BoardWrapper = styled.div`
-  padding-top: 20vh;
-  height: 80vh;
+  height: 100vh;
   overflow-x: auto;
   display: flex;
   &:active {

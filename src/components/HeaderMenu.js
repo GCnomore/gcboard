@@ -1,20 +1,20 @@
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import News from "./News";
+
 import cloud from "../assets/weatherImg/cloud.png";
 import clearsky from "../assets/weatherImg/clearsky.png";
 import mist from "../assets/weatherImg/mist.png";
 import rain from "../assets/weatherImg/rain.png";
 import snow from "../assets/weatherImg/snow.png";
 import thunderstorm from "../assets/weatherImg/thunderstorm.png";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components/macro";
 
 export default function HeaderMenu() {
   const [weatherInfo, setWeather] = useState();
-  const [timeAndDate, setTimeAndDate] = useState({ time: "", date: "" });
 
   useEffect(() => {
     getWeather();
@@ -75,11 +75,10 @@ export default function HeaderMenu() {
       Time.getSeconds() < 10 ? `0${Time.getSeconds()}` : Time.getSeconds();
     const meridiem = hour >= 12 ? "PM" : "AM";
     const time = `${hour}:${minute}:${second} ${meridiem}`;
-    setTimeAndDate({ date, time });
+    return renderTime(date, time);
   };
 
-  const renderTime = () => {
-    const { date, time } = timeAndDate;
+  const renderTime = (date, time) => {
     return (
       <TimeContainer>
         <h2>{date}</h2>
@@ -96,6 +95,7 @@ export default function HeaderMenu() {
             {weatherInfo ? renderWeather() : "LOADING"}
           </WeatherContainer>
         </LeftSection>
+        <News />
         <RightSection>
           <MenuItem href="/">
             <FontAwesomeIcon icon={faPlus} />
@@ -105,7 +105,7 @@ export default function HeaderMenu() {
           </MenuItem>
           <MenuItem href="/">Boards</MenuItem>
           <MenuItem href="/">Profile</MenuItem>
-          {renderTime()}
+          {getTimeAndDate()}
         </RightSection>
       </Grid>
     </HeaderMenuWrapper>

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export function grabAndSlide(className) {
+export function grabAndSlide(className, power) {
   const wrapper = document.querySelector(`.${className}`);
   let isDown = false;
   let startX;
@@ -10,7 +10,7 @@ export function grabAndSlide(className) {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - wrapper.offsetLeft;
-    const slide = (x - startX) * 2;
+    const slide = (x - startX) * power;
     wrapper.scrollLeft = scrollLeft - slide;
   });
 

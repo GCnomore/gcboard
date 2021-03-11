@@ -12,10 +12,8 @@ export default function HeaderMenu({ state, dispatch }) {
   return (
     <HeaderMenuWrapper>
       <Grid container>
-        <LeftSection>
-          <Weather />
-        </LeftSection>
-        <News />
+        <LeftSection>{/* <Weather /> */}</LeftSection>
+        {/* <News /> */}
         <RightSection>
           <MenuItem href="/">
             <FontAwesomeIcon icon={faPlus} />

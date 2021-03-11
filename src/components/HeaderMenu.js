@@ -1,6 +1,6 @@
 import Grid from "@material-ui/core/Grid";
-import News from "./News";
 import Weather from "./Weather";
+import News from "./News";
 import TimeAndDate from "./TimeAndDate";
 import { ACTIONS } from "../App";
 import styled from "styled-components/macro";

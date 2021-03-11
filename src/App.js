@@ -66,8 +66,8 @@ export default function App() {
       title: "",
     },
     showModal: { show: false, message: "" },
-    currentBoard: localStorage.getItem("data")
-      ? [JSON.parse(localStorage.getItem("data"))]
+    currentBoard: localStorage.getItem("gc_board_data")
+      ? [JSON.parse(localStorage.getItem("gc_board_data"))]
       : [],
   });
   return (

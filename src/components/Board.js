@@ -78,6 +78,8 @@ export default function Board({ state, dispatch }) {
             newBoard={newBoard}
             setNewBoard={setNewBoard}
             addNewBoard={addNewBoard}
+            state={state}
+            dispatch={dispatch}
           />
         </>
       ) : (

@@ -9,7 +9,7 @@ export default function News() {
   useEffect(() => {
     grabAndSlide("newsContainer", 0.8);
     getNews();
-  });
+  }, []);
 
   const getNews = async () => {
     const { REACT_APP_NEWS_API_KEY } = process.env;

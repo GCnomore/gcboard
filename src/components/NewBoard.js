@@ -1,28 +1,126 @@
+import Error from "./Error";
+import { ACTIONS } from "../App";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
+import Modal from "@material-ui/core/Modal";
 
-export default function NewBoard({ newBoard, setNewBoard, addNewBoard }) {
+export default function NewBoard({
+  newBoard,
+  setNewBoard,
+  addNewBoard,
+  state,
+  dispatch,
+}) {
   const boardTypes = [
     {
       name: "No Template",
       image: "",
+      template: [],
     },
     {
       name: "Kanban Board",
       image: "",
+      template: [
+        {
+          title: "Backlog",
+          cards: [],
+        },
+        {
+          title: "Design",
+          cards: [],
+        },
+        {
+          title: "To Do",
+          cards: [],
+        },
+        {
+          title: "Doing",
+          cards: [],
+        },
+        {
+          title: "Pending",
+          cards: [],
+        },
+        {
+          title: "Testing",
+          cards: [],
+        },
+        {
+          title: "Done",
+          cards: [],
+        },
+      ],
     },
     {
       name: "Project Management",
       image: "",
+      template: [
+        {
+          title: "Project Resources",
+          cards: [],
+        },
+        {
+          title: "Questions For Next Meeting",
+          cards: [],
+        },
+        {
+          title: "To Do",
+          cards: [],
+        },
+        {
+          title: "Pending",
+          cards: [],
+        },
+        {
+          title: "Blocked",
+          cards: [],
+        },
+        {
+          title: "Done",
+          cards: [],
+        },
+      ],
     },
   ];
+  const [selectedType, setSelectedType] = useState("");
 
-  const [selectedType, setSelectedType] = useState();
+  const createNewBoard = () => {
+    const board = boardTypes.find((board) => board.name === selectedType);
+    newBoard.type = selectedType;
+    newBoard.lists = board.template;
+    setNewBoard(newBoard);
+    addNewBoard();
+  };
+
+  const errorModalOpen = (message) => {
+    dispatch({ type: ACTIONS.SHOW_MODAL, payload: { show: true, message } });
+  };
+
+  const onModalClose = () => {
+    dispatch({
+      type: ACTIONS.SHOW_MODAL,
+      payload: { show: false, message: "" },
+    });
+  };
+
+  const showErrorModal = (message) => {
+    return (
+      <Modal
+        open={state.showModal.show}
+        onClose={onModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Error message={message} />
+      </Modal>
+    );
+  };
 
   return (
     <NewBoardContainer>
+      {showErrorModal(state.showModal.message)}
       <div>
         <h1>Create new board</h1>
       </div>
@@ -59,9 +157,13 @@ export default function NewBoard({ newBoard, setNewBoard, addNewBoard }) {
       <div>
         <button
           onClick={() => {
-            newBoard.type = selectedType;
-            setNewBoard(newBoard);
-            addNewBoard();
+            if (newBoard.name === "") {
+              errorModalOpen("Board must have title");
+            } else if (selectedType === "") {
+              errorModalOpen("Please choose a template");
+            } else {
+              createNewBoard();
+            }
           }}
         >
           Create

@@ -19,7 +19,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
   const { lists } = currentBoard[0];
 
   useEffect(() => {
-    localStorage.setItem("data", JSON.stringify(currentBoard[0]));
+    localStorage.setItem("gc_board_data", JSON.stringify(currentBoard[0]));
   }, [currentBoard]);
 
   const renderAddCard = (index, listTitle) => {
@@ -186,6 +186,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
       selected: currentBoard[0].selected,
       lists: newList,
       id: currentBoard[0].id,
+      type: currentBoard[0].type,
     };
     dispatch({
       type: ACTIONS.CURRENT_BOARD,

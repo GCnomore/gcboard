@@ -13,7 +13,7 @@ export default function Weather() {
   const [weatherInfo, setWeather] = useState();
   useEffect(() => {
     getWeather();
-  });
+  }, []);
 
   const getWeather = () => {
     const img = [

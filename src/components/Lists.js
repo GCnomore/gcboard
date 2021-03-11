@@ -144,7 +144,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
     dispatch({ type: ACTIONS.SHOW_MODAL, payload: { show: true, message } });
   };
 
-  const errorModalClose = () => {
+  const onModalClose = () => {
     dispatch({
       type: ACTIONS.SHOW_MODAL,
       payload: { show: false, message: "" },
@@ -155,7 +155,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
     return (
       <Modal
         open={state.showModal.show}
-        onClose={errorModalClose}
+        onClose={onModalClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
@@ -233,6 +233,7 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
   return (
     <ListContainer>
       {showErrorModal(state.showModal.message)}
+
       <div>
         {lists.map((item, index) => {
           const show =

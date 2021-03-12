@@ -5,7 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components/macro";
 
-export default function Cards({ cardData }) {
+export default function Cards({
+  cardData,
+  setOpen,
+  state,
+  dispatch,
+  activeBoard,
+}) {
   const [card, setCard] = useState(cardData.data);
   const [comment, setComment] = useState("");
   const [description, setDescription] = useState("");
@@ -32,6 +38,24 @@ export default function Cards({ cardData }) {
     card.description = description;
     setCard(card);
     setDescription("");
+  };
+
+  const deleteCard = () => {
+    setOpen(false);
+    console.log(cardData);
+    console.log(activeBoard);
+
+    const currentList = activeBoard.lists.find(
+      (list) => list.title === cardData.listTitle
+    );
+    const newCardList = currentList.cards.filter(
+      (card) => card.title !== cardData.data.title
+    );
+    const currentListIndex = activeBoard.lists.findIndex(
+      (list) => list.title === currentList.title
+    );
+    activeBoard.lists[currentListIndex].cards = newCardList;
+    console.log(activeBoard);
   };
 
   return (
@@ -111,7 +135,7 @@ export default function Cards({ cardData }) {
             <h2>Actions</h2>
             <div>
               <MenuItem>Move</MenuItem>
-              <MenuItem>Delete</MenuItem>
+              <MenuItem onClick={() => deleteCard()}>Delete</MenuItem>
             </div>
           </div>
         </CardContentRight>

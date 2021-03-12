@@ -29,9 +29,9 @@ export default function Board({ state, dispatch }) {
     grabAndSlide("boardWrapper", 1.5);
   }, [changeName]);
 
-  const handleModalOpen = (cardData, cardTitle) => {
+  const handleModalOpen = (cardData, listTitle) => {
     setOpen(true);
-    setEditCard({ data: cardData, cardTitle });
+    setEditCard({ data: cardData, listTitle });
   };
 
   const handleModalClose = () => {
@@ -46,7 +46,13 @@ export default function Board({ state, dispatch }) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <Cards cardData={editCard} />
+        <Cards
+          cardData={editCard}
+          setOpen={setOpen}
+          state={state}
+          dispatch={dispatch}
+          activeBoard={activeBoard}
+        />
       </Modal>
     );
   };

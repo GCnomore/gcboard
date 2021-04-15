@@ -12,6 +12,7 @@ export default function News() {
   }, []);
 
   const getNews = async () => {
+    console.log("getting news");
     const { REACT_APP_NEWS_API_KEY } = process.env;
     const newsData = await axios.get(
       `https://newsapi.org/v2/top-headlines?country=us&apiKey=${REACT_APP_NEWS_API_KEY}`
@@ -23,8 +24,8 @@ export default function News() {
   return (
     <NewsContainer className="newsContainer">
       {news &&
-        news.map((item) => (
-          <NewsWrap image={item.urlToImage} url={item.url}>
+        news.map((item, index) => (
+          <NewsWrap image={item.urlToImage} url={item.url} key={index}>
             <NewsTitle>{item.title.slice(0, 60)}...</NewsTitle>
           </NewsWrap>
         ))}

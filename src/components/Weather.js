@@ -16,6 +16,7 @@ export default function Weather() {
   }, []);
 
   const getWeather = () => {
+    console.log("getting weather");
     const img = [
       { name: "cloud", src: cloud },
       { name: "clearsky", src: clearsky },

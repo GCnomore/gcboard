@@ -16,7 +16,20 @@ import Modal from "@material-ui/core/Modal";
 export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
   const currentBoard = state.currentBoard.filter((board) => board.selected);
   const [card, setCard] = useState("");
+  const [editListTitle, setEditListTitle] = useState({
+    listTitle: "",
+    edit: false,
+  });
+  const [newListTitle, setNewListTItle] = useState("");
+
   const { lists } = currentBoard[0];
+
+  editListTitle.edit &&
+    window.addEventListener(
+      "keydown",
+      (e) =>
+        e.code === "Escape" && setEditListTitle({ listTitle: "", edit: false })
+    );
 
   useEffect(() => {
     localStorage.setItem("gc_board_data", JSON.stringify(currentBoard[0]));
@@ -255,8 +268,27 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
                 >
                   <FontAwesomeIcon icon={faEllipsisH} />
                 </div>
-                <ListTitle>
-                  <a href="/">{item.title}</a>
+                <ListTitle
+                  onClick={() =>
+                    setEditListTitle({ listTitle: item.title, edit: true })
+                  }
+                >
+                  {editListTitle.edit &&
+                  editListTitle.listTitle === item.title ? (
+                    <input
+                      placeholder={item.title}
+                      onChange={(e) => setNewListTItle(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.code === "Enter") {
+                          setEditListTitle({ listTitle: "", edit: false });
+
+                          setNewListTItle("");
+                        }
+                      }}
+                    />
+                  ) : (
+                    <a rel="noreferrer">{item.title}</a>
+                  )}
                 </ListTitle>
               </ListHeader>
 

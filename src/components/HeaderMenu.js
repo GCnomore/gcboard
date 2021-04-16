@@ -12,7 +12,9 @@ export default function HeaderMenu({ state, dispatch }) {
   return (
     <HeaderMenuWrapper>
       <Grid container>
-        <LeftSection>{/* <Weather /> */}</LeftSection>
+        <LeftSection>
+          <Weather />
+        </LeftSection>
         {/* <News /> */}
         <RightSection>
           <MenuItem href="/">

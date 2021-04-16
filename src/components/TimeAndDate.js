@@ -29,8 +29,8 @@ export default function TimeAndDate() {
 }
 
 const TimeContainer = styled.div`
-  padding: 0.25rem 1rem 0.25rem 1rem;
-  margin-top: 1rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  margin-top: 0.5rem;
   font-size: 1.5rem;
   line-height: 0.3;
   min-width: 18vw;

@@ -434,11 +434,24 @@ const ListTitle = styled.div`
   font-size: 1.5rem;
   display: flex;
   justify-content: center;
+
   > a {
     cursor: pointer;
     text-decoration: none;
     color: inherit;
     align-self: center;
+  }
+
+  > input {
+    height: 2rem;
+    align-self: center;
+    background-color: transparent;
+  }
+
+  > input::placeholder {
+    font-size: 1.5rem;
+    color: white;
+    background-color: transparent;
   }
 `;
 

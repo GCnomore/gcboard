@@ -74,22 +74,42 @@ export default function Weather() {
 
 const WeatherContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.25rem 1rem 0.25rem 1rem;
-  min-width: 20vw;
+  padding: 0.5rem 0.25rem 0.5rem 0.25rem;
+  width: 20vw;
+  min-width: 15vw;
   height: fit-content;
   text-align: center;
   border-radius: 0.4rem;
   margin-left: 0.25rem;
+
+  > div:nth-child(1) {
+    > h1 {
+      word-wrap: none;
+      margin: 0;
+    }
+
+    > h2 {
+      font-size: 1.8rem;
+      margin: 0.5rem 0 0 0;
+    }
+  }
+
   > div:nth-child(2) {
     > img {
       width: 5rem;
+      margin-top: -1rem;
     }
+
     > h2 {
       margin: 0;
+    }
+
+    > h2:nth-child(2) {
+      margin-top: -1rem;
     }
   }
 `;

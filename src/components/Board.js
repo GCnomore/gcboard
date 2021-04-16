@@ -98,7 +98,7 @@ export default function Board({ state, dispatch }) {
                   setChangeName({ name: e.target.value, show: true });
                 }}
                 onKeyDown={(e) => {
-                  e.key === "Enter" && changeBoardName(e);
+                  e.key === "Enter" && changeBoardName();
                 }}
               ></input>
             ) : (
@@ -116,6 +116,7 @@ export default function Board({ state, dispatch }) {
             dispatch={dispatch}
             handleModalOpen={handleModalOpen}
             setOpen={setOpen}
+            activeBoard={activeBoard}
           />
           {renderEditCard()}
         </>
@@ -139,7 +140,7 @@ Styles
 
 const BoardWrapper = styled.div`
   height: 100vh;
-  overflow-x: auto;
+  overflow: hidden;
   display: flex;
   &:active {
     cursor: grabbing;

@@ -13,14 +13,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Modal from "@material-ui/core/Modal";
 
-export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
+export default function Lists({
+  state,
+  dispatch,
+  handleModalOpen,
+  setOpen,
+  activeBoard,
+}) {
   const currentBoard = state.currentBoard.filter((board) => board.selected);
   const [card, setCard] = useState("");
   const [editListTitle, setEditListTitle] = useState({
     listTitle: "",
     edit: false,
   });
-  const [newListTitle, setNewListTItle] = useState("");
 
   const { lists } = currentBoard[0];
 
@@ -244,6 +249,12 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
     });
   };
 
+  const changeListName = () => {
+    const newBoard = state.currentBoard;
+    dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+    setEditListTitle({ listTitle: "", edit: false });
+  };
+
   return (
     <ListContainer>
       {showErrorModal(state.showModal.message)}
@@ -277,14 +288,10 @@ export default function Lists({ state, dispatch, handleModalOpen, setOpen }) {
                   editListTitle.listTitle === item.title ? (
                     <input
                       placeholder={item.title}
-                      onChange={(e) => setNewListTItle(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.code === "Enter") {
-                          setEditListTitle({ listTitle: "", edit: false });
-
-                          setNewListTItle("");
-                        }
+                      onChange={(e) => {
+                        activeBoard.lists[index].title = e.target.value;
                       }}
+                      onKeyDown={(e) => e.key === "Enter" && changeListName()}
                     />
                   ) : (
                     <a rel="noreferrer">{item.title}</a>

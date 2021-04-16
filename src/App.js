@@ -70,6 +70,7 @@ export default function App() {
       ? [JSON.parse(localStorage.getItem("gc_board_data"))]
       : [],
   });
+
   return (
     <AppContainer>
       <HeaderMenu state={state} dispatch={dispatch} />

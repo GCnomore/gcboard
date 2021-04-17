@@ -93,12 +93,15 @@ export default function Board({ state, dispatch }) {
           <BoardTitle>
             {changeName.show ? (
               <input
-                placeholder={activeBoard.name}
+                defaultValue={activeBoard.name}
+                autoFocus={true}
                 onChange={(e) => {
                   setChangeName({ name: e.target.value, show: true });
                 }}
                 onKeyDown={(e) => {
-                  e.key === "Enter" && changeBoardName();
+                  e.target.value !== "" &&
+                    e.key === "Enter" &&
+                    changeBoardName();
                 }}
               ></input>
             ) : (

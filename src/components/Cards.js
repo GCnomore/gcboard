@@ -15,6 +15,10 @@ export default function Cards({
   const [card, setCard] = useState(cardData.data);
   const [comment, setComment] = useState("");
   const [description, setDescription] = useState("");
+  const [editCardTitle, setEditCardTitle] = useState({
+    title: "",
+    edit: false,
+  });
   const time =
     new Date().getHours() > 12
       ? `${new Date().getHours() - 12}:${new Date().getMinutes()}PM`
@@ -58,11 +62,36 @@ export default function Cards({
     console.log(activeBoard);
   };
 
+  const changeCardTitle = () => {
+    const newBoard = state.currentBoard;
+  };
+
+  console.log(activeBoard);
+  console.log(cardData);
+
   return (
     <CardsContainer>
       <CardHeader>
         <div>
-          <h1>{card.title}</h1>
+          {editCardTitle.edit ? (
+            <input
+              autoFocus={true}
+              defaultValue={card.title}
+              onChange={(e) =>
+                setEditCardTitle({ title: e.target.value, edit: true })
+              }
+              onKeyDown={(e) => e.key === "Enter" && changeCardTitle()}
+            />
+          ) : (
+            <h1
+              onClick={() =>
+                setEditCardTitle({ title: card.title, edit: true })
+              }
+            >
+              {card.title}
+            </h1>
+          )}
+
           <FontAwesomeIcon icon={faTimes} />
         </div>
         <CardTimeStamp>Created {card.timeStamp}</CardTimeStamp>
@@ -79,14 +108,14 @@ export default function Cards({
               {card.description ? (
                 <div>{card.description}</div>
               ) : (
-                <CardInput
+                <DescriptionInput
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   onKeyDown={(e) => {
                     (e.code === "Enter" || e.code === "NumpadEnter") &&
                       addDescription(e.target.value);
                   }}
-                ></CardInput>
+                ></DescriptionInput>
               )}
             </div>
           </Description>
@@ -183,6 +212,27 @@ const CardHeader = styled.div`
       margin: 0;
     }
   }
+
+  > div:nth-child(1) {
+    > input {
+      height: 2rem;
+      align-self: center;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.5rem;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    > input::placeholder {
+      font-size: 1.5rem;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      font-weight: 600;
+    }
+  }
 `;
 
 const CardContentWrapper = styled.div`
@@ -253,6 +303,10 @@ const TimeStamp = styled.span`
   margin-left: 1rem;
   font-size: 0.8rem;
   text-align: right;
+`;
+
+const DescriptionInput = styled.input`
+  width: 100%;
 `;
 
 const CardInput = styled.input`

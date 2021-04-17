@@ -19,7 +19,7 @@ export default function Weather() {
     console.log("getting weather");
     const img = [
       { name: "cloud", src: cloud },
-      { name: "clearsky", src: clearsky },
+      { name: "clear sky", src: clearsky },
       { name: "mist", src: mist },
       { name: "rain", src: rain },
       { name: "snow", src: snow },
@@ -42,7 +42,6 @@ export default function Weather() {
           result.data.weather[0].description.includes(item.name)
         ),
       };
-
       setWeather(weather);
     });
   };
@@ -89,27 +88,22 @@ const WeatherContainer = styled.div`
   > div:nth-child(1) {
     > h1 {
       word-wrap: none;
-      margin: 0;
+      margin: 0 0.5rem;
     }
 
     > h2 {
       font-size: 1.8rem;
-      margin: 0.5rem 0 0 0;
+      margin: 0 1rem;
     }
   }
 
   > div:nth-child(2) {
     > img {
       width: 5rem;
-      margin-top: -1rem;
     }
 
     > h2 {
-      margin: 0;
-    }
-
-    > h2:nth-child(2) {
-      margin-top: -1rem;
+      margin: 0 0.5rem;
     }
   }
 `;

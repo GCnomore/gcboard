@@ -54,6 +54,9 @@ export default function Lists({
           onChange={(e) => {
             setCard(e.target.value);
           }}
+          onKeyDown={(e) => {
+            e.target.value !== "" && e.key === "Enter" && addCard(listTitle);
+          }}
         />
         <div>
           <Button
@@ -287,11 +290,16 @@ export default function Lists({
                   {editListTitle.edit &&
                   editListTitle.listTitle === item.title ? (
                     <input
-                      placeholder={item.title}
+                      defaultValue={item.title}
                       onChange={(e) => {
                         activeBoard.lists[index].title = e.target.value;
                       }}
-                      onKeyDown={(e) => e.key === "Enter" && changeListName()}
+                      onKeyDown={(e) =>
+                        e.target.value !== "" &&
+                        e.key === "Enter" &&
+                        changeListName()
+                      }
+                      autoFocus={true}
                     />
                   ) : (
                     <a rel="noreferrer">{item.title}</a>
@@ -304,7 +312,7 @@ export default function Lists({
                 {renderAddCard(index, item.title)}
                 <AddAnotherCard
                   show={show}
-                  onClick={(e) => {
+                  onClick={() => {
                     dispatch({ type: ACTIONS.ADD_CARD, index });
                   }}
                 >
@@ -446,12 +454,21 @@ const ListTitle = styled.div`
     height: 2rem;
     align-self: center;
     background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   > input::placeholder {
     font-size: 1.5rem;
     color: white;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-weight: 600;
   }
 `;
 
@@ -462,6 +479,7 @@ const XButton = styled.div`
 
 const AddAnotherCard = styled.div`
   display: ${(props) => (props.show ? "flex" : "none")};
+  cursor: pointer;
 `;
 
 const AddList = styled.div`

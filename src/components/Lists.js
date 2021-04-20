@@ -96,7 +96,7 @@ export default function Lists({
             key={index}
             onClick={() => {
               setOpen(true);
-              handleModalOpen(item, cards[0].title);
+              handleModalOpen(item, cards[0].title, index);
             }}
           >
             {item.title}

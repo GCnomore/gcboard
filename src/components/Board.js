@@ -29,9 +29,9 @@ export default function Board({ state, dispatch }) {
     grabAndSlide("boardWrapper", 1.5);
   }, [changeName]);
 
-  const handleModalOpen = (cardData, listTitle) => {
+  const handleModalOpen = (cardData, listTitle, cardIndex) => {
     setOpen(true);
-    setEditCard({ data: cardData, listTitle });
+    setEditCard({ data: cardData, listTitle, cardIndex });
   };
 
   const handleModalClose = () => {

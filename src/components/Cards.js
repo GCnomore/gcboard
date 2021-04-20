@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components/macro";
+import { ACTIONS } from "../App";
 
 export default function Cards({
   cardData,
@@ -46,8 +47,6 @@ export default function Cards({
 
   const deleteCard = () => {
     setOpen(false);
-    console.log(cardData);
-    console.log(activeBoard);
 
     const currentList = activeBoard.lists.find(
       (list) => list.title === cardData.listTitle
@@ -59,15 +58,21 @@ export default function Cards({
       (list) => list.title === currentList.title
     );
     activeBoard.lists[currentListIndex].cards = newCardList;
-    console.log(activeBoard);
   };
 
   const changeCardTitle = () => {
-    const newBoard = state.currentBoard;
-  };
+    const newList = activeBoard.lists.find(
+      (list) => list.title === cardData.listTitle
+    );
+    newList.cards[cardData.cardIndex].title = editCardTitle.title;
 
-  console.log(activeBoard);
-  console.log(cardData);
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: [activeBoard] },
+    });
+
+    setEditCardTitle({ title: "", edit: false });
+  };
 
   return (
     <CardsContainer>
@@ -92,7 +97,7 @@ export default function Cards({
             </h1>
           )}
 
-          <FontAwesomeIcon icon={faTimes} />
+          <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
         </div>
         <CardTimeStamp>Created {card.timeStamp}</CardTimeStamp>
         <div>in list {cardData.cardTitle}</div>
@@ -208,8 +213,14 @@ const CardHeader = styled.div`
   > div {
     display: flex;
     justify-content: space-between;
+
     > h1 {
       margin: 0;
+    }
+
+    > svg {
+      cursor: pointer;
+      font-size: 1.5rem;
     }
   }
 

@@ -91,7 +91,7 @@ export default function Board({ state, dispatch }) {
       ) : (
         <>
           <BoardTitle>
-            {changeName.show ? (
+            {changeName.show || activeBoard.name === "" ? (
               <input
                 defaultValue={activeBoard.name}
                 autoFocus={true}
@@ -100,7 +100,7 @@ export default function Board({ state, dispatch }) {
                 }}
                 onKeyDown={(e) => {
                   e.target.value !== "" &&
-                    e.key === "Enter" &&
+                    (e.code === "Enter" || e.code === "NumpadEnter") &&
                     changeBoardName();
                 }}
               ></input>
@@ -143,7 +143,7 @@ Styles
 
 const BoardWrapper = styled.div`
   height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
   display: flex;
   &:active {
     cursor: grabbing;

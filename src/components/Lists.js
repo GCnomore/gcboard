@@ -55,7 +55,9 @@ export default function Lists({
             setCard(e.target.value);
           }}
           onKeyDown={(e) => {
-            e.target.value !== "" && e.key === "Enter" && addCard(listTitle);
+            e.target.value !== "" &&
+              (e.code === "Enter" || e.code === "NumpadEnter") &&
+              addCard(listTitle);
           }}
         />
         <div>
@@ -296,7 +298,7 @@ export default function Lists({
                       }}
                       onKeyDown={(e) =>
                         e.target.value !== "" &&
-                        e.key === "Enter" &&
+                        (e.code === "Enter" || e.code === "NumpadEnter") &&
                         changeListName()
                       }
                       autoFocus={true}

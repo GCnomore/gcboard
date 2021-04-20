@@ -15,7 +15,10 @@ export default function Cards({
 }) {
   const [card, setCard] = useState(cardData.data);
   const [comment, setComment] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState({
+    edit: card.description === "" ? true : false,
+    desc: card.description,
+  });
   const [editCardTitle, setEditCardTitle] = useState({
     title: "",
     edit: false,
@@ -40,9 +43,9 @@ export default function Cards({
   };
 
   const addDescription = () => {
-    card.description = description;
+    card.description = description.desc;
     setCard(card);
-    setDescription("");
+    setDescription({ edit: false, desc: "" });
   };
 
   const deleteCard = () => {
@@ -74,6 +77,14 @@ export default function Cards({
     setEditCardTitle({ title: "", edit: false });
   };
 
+  const deleteComments = (commentIndex) => {
+    const newList = activeBoard.lists.find(
+      (list) => list.title === cardData.listTitle
+    );
+    newList.cards[cardData.cardIndex].comments.splice(commentIndex, 1);
+    setEditCardTitle({ title: "", edit: false });
+  };
+
   return (
     <CardsContainer>
       <CardHeader>
@@ -85,7 +96,10 @@ export default function Cards({
               onChange={(e) =>
                 setEditCardTitle({ title: e.target.value, edit: true })
               }
-              onKeyDown={(e) => e.key === "Enter" && changeCardTitle()}
+              onKeyDown={(e) =>
+                (e.code === "Enter" || e.code === "NumpadEnter") &&
+                changeCardTitle()
+              }
             />
           ) : (
             <h1
@@ -107,40 +121,57 @@ export default function Cards({
           <Description>
             <div>
               <h2>Description</h2>
-              <MenuItem>Edit</MenuItem>
+              <MenuItem
+                onClick={() =>
+                  setDescription({ edit: true, desc: card.description })
+                }
+              >
+                Edit
+              </MenuItem>
             </div>
             <div>
-              {card.description ? (
-                <div>{card.description}</div>
-              ) : (
+              {description.edit ? (
                 <DescriptionInput
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={description.desc}
+                  onChange={(e) =>
+                    setDescription({ edit: true, desc: e.target.value })
+                  }
                   onKeyDown={(e) => {
                     (e.code === "Enter" || e.code === "NumpadEnter") &&
                       addDescription(e.target.value);
                   }}
-                ></DescriptionInput>
+                />
+              ) : (
+                <div>{card.description}</div>
               )}
             </div>
           </Description>
           <CommentsContainer>
             <div>
               <h2>Comments</h2>
-              <MenuItem>Show Details</MenuItem>
             </div>
-            <Comments>
-              {card.comments ? (
-                <>
-                  {card.comments.map((comment, index) => (
-                    <div key={index}>
-                      <span>{comment.text}</span>
-                      <TimeStamp>{comment.created}</TimeStamp>
-                    </div>
-                  ))}
-                </>
-              ) : null}
-            </Comments>
+            <div>
+              <Comments>
+                {card.comments ? (
+                  <>
+                    {card.comments.map((comment, index) => (
+                      <div key={index}>
+                        <div>
+                          <span>{comment.text}</span>
+                        </div>
+                        <div>
+                          <TimeStamp>{comment.created}</TimeStamp>
+                          <FontAwesomeIcon
+                            icon={faTimes}
+                            onClick={() => deleteComments(index)}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : null}
+              </Comments>
+            </div>
             <CardInput
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -197,7 +228,8 @@ Cards.propTypes = {
 
 const CardsContainer = styled.div`
   width: 60vw;
-  height: 70vh;
+  height: fit-content;
+  min-height: 70vh;
   padding: 20px;
   position: absolute;
   top: 50%;
@@ -289,6 +321,13 @@ const CommentsContainer = styled(Description)`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+
+  > div:nth-child(2) {
+    height: 40vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   > h2 {
     margin: 0;
   }
@@ -301,11 +340,29 @@ const CommentsContainer = styled(Description)`
 const Comments = styled.div`
   > div {
     display: flex;
-    justify-content: space-between;
+    width: 100%;
+    align-items: center;
     margin: 1rem 0;
 
-    > span:nth-child(1) {
-      overflow-wrap: anywhere;
+    > div:nth-child(1) {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+
+      > span:nth-child(1) {
+        overflow-wrap: anywhere;
+      }
+    }
+
+    > div:nth-child(2) {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+
+      > svg {
+        margin: 0 0.5rem 0 1rem;
+        cursor: pointer;
+      }
     }
   }
 `;

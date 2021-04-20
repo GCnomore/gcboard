@@ -415,11 +415,11 @@ const List = styled.div`
 const ListItems = styled.div`
   padding: 0.5rem;
   margin: 0.75rem 0 0.75rem 0;
-  background-color: rgba(102, 101, 99, 0.568);
-  backdrop-filter: blur(1.5px);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 0.25rem;
   cursor: pointer;
   transition: 0.5s;
+  box-shadow: 0 0 3px 0.2px white;
   &:hover {
     filter: brightness(70%);
     transition: 0.75s;

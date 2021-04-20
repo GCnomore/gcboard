@@ -155,7 +155,7 @@ export default function NewBoard({
         </div>
       </div>
       <div>
-        <button
+        <CreateButton
           onClick={() => {
             if (newBoard.name === "") {
               errorModalOpen("Board must have title");
@@ -167,7 +167,7 @@ export default function NewBoard({
           }}
         >
           Create
-        </button>
+        </CreateButton>
       </div>
     </NewBoardContainer>
   );
@@ -236,5 +236,27 @@ const TemplateName = styled.h3`
   text-shadow: ${(props) => (props.shadow ? "0px 5px 10px white" : "none")};
   :hover {
     cursor: pointer;
+  }
+`;
+
+const CreateButton = styled.button`
+  color: white;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 0.2px;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: 0.2s;
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;

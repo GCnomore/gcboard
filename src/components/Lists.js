@@ -37,7 +37,7 @@ export default function Lists({
     );
 
   useEffect(() => {
-    localStorage.setItem("gc_board_data", JSON.stringify(currentBoard[0]));
+    localStorage.setItem("gc_board_data", [JSON.stringify(currentBoard)]);
   }, [currentBoard]);
 
   const renderAddCard = (index, listTitle) => {

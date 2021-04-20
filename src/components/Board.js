@@ -27,7 +27,7 @@ export default function Board({ state, dispatch }) {
       e.key === "Escape" && setChangeName({ name: "", show: false });
     });
     grabAndSlide("boardWrapper", 1.5);
-  }, [changeName]);
+  }, []);
 
   const handleModalOpen = (cardData, listTitle, cardIndex) => {
     setOpen(true);

@@ -1,8 +1,11 @@
 import HeaderMenu from "./components/HeaderMenu";
 import Board from "./components/Board";
+import BoardList from "./components/BoardList";
 import bgImg from "./assets/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.jpg";
-import styled from "styled-components";
-import { useReducer } from "react";
+import styled from "styled-components/macro";
+import { useReducer, useState } from "react";
+
+import Modal from "@material-ui/core/Modal";
 
 export const ACTIONS = {
   LIST_MENU: "listMenu",
@@ -67,14 +70,42 @@ export default function App() {
     },
     showModal: { show: false, message: "" },
     currentBoard: localStorage.getItem("gc_board_data")
-      ? [JSON.parse(localStorage.getItem("gc_board_data"))]
+      ? [
+          JSON.parse(localStorage.getItem("gc_board_data")).find(
+            (board) => board.selected === true
+          ),
+        ]
       : [],
   });
+  const [boardList, setBoardList] = useState({ show: false });
+
+  const handleModalOpen = () => {
+    setBoardList({ show: true });
+  };
+
+  const handleModalClose = () => {
+    setBoardList({ show: false });
+  };
 
   return (
     <AppContainer>
-      <HeaderMenu state={state} dispatch={dispatch} />
+      <HeaderMenu
+        state={state}
+        dispatch={dispatch}
+        boardList={boardList}
+        setBoardList={setBoardList}
+      />
       <Board state={state} dispatch={dispatch} />
+      {boardList.show ? (
+        <BoardListModal
+          open={boardList.show}
+          onClose={handleModalClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <BoardList />
+        </BoardListModal>
+      ) : null}
     </AppContainer>
   );
 }
@@ -85,4 +116,12 @@ const AppContainer = styled.div`
   background-position: 50%;
   height: 100vh;
   background-image: url(${bgImg});
+`;
+
+const BoardListModal = styled(Modal)`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;

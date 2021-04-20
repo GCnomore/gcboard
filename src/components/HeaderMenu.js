@@ -1,14 +1,15 @@
-import Grid from "@material-ui/core/Grid";
+import { useState } from "react";
 import Weather from "./Weather";
 import News from "./News";
 import TimeAndDate from "./TimeAndDate";
 import { ACTIONS } from "../App";
 import styled from "styled-components/macro";
 
+import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
-export default function HeaderMenu({ state, dispatch }) {
+export default function HeaderMenu({ state, dispatch, setBoardList }) {
   return (
     <HeaderMenuWrapper>
       <Grid container>
@@ -23,7 +24,9 @@ export default function HeaderMenu({ state, dispatch }) {
           <MenuItem href="/">
             <FontAwesomeIcon icon={faInfoCircle} />
           </MenuItem>
-          <MenuItem>Boards</MenuItem>
+          <MenuItem onClick={() => setBoardList({ show: true })}>
+            Boards
+          </MenuItem>
           <MenuItem
             onClick={() => {
               dispatch({

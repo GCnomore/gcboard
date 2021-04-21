@@ -8,8 +8,13 @@ import { ACTIONS } from "../App";
 import Modal from "@material-ui/core/Modal";
 import styled from "styled-components/macro";
 
-export default function Board({ state, dispatch }) {
-  const activeBoard = state.currentBoard.find((board) => board.selected);
+export default function Board({
+  state,
+  dispatch,
+  createNew,
+  setCreateNew,
+  currentBoard,
+}) {
   const [editCard, setEditCard] = useState();
   const [open, setOpen] = useState(false);
   const [newBoard, setNewBoard] = useState({
@@ -51,34 +56,36 @@ export default function Board({ state, dispatch }) {
           setOpen={setOpen}
           state={state}
           dispatch={dispatch}
-          activeBoard={activeBoard}
+          currentBoard={currentBoard}
         />
       </Modal>
     );
   };
 
   const addNewBoard = () => {
-    state.currentBoard.length === 0
+    currentBoard.length === 0
       ? dispatch({
           type: ACTIONS.CURRENT_BOARD,
           payload: { newBoard: [newBoard] },
         })
       : dispatch({
           type: ACTIONS.CURRENT_BOARD,
-          payload: { newBoard: [...state.currentBoard, newBoard] },
+          payload: { newBoard: [...state.board, newBoard] },
         });
   };
 
   const changeBoardName = () => {
-    activeBoard.name = changeName.name;
-    const newBoard = state.currentBoard;
-    dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+    currentBoard.name = changeName.name;
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
     setChangeName({ name: changeName.name, show: false });
   };
 
   return (
     <BoardWrapper className="boardWrapper">
-      {state.currentBoard.length === 0 ? (
+      {currentBoard.length === 0 || createNew ? (
         <>
           <NewBoard
             newBoard={newBoard}
@@ -86,14 +93,16 @@ export default function Board({ state, dispatch }) {
             addNewBoard={addNewBoard}
             state={state}
             dispatch={dispatch}
+            setCreateNew={setCreateNew}
+            currentBoard={currentBoard}
           />
         </>
       ) : (
         <>
           <BoardTitle>
-            {changeName.show || activeBoard.name === "" ? (
+            {changeName.show || currentBoard.name === "" ? (
               <input
-                defaultValue={activeBoard.name}
+                defaultValue={currentBoard.name}
                 autoFocus={true}
                 onChange={(e) => {
                   setChangeName({ name: e.target.value, show: true });
@@ -110,7 +119,7 @@ export default function Board({ state, dispatch }) {
                   setChangeName({ name: changeName.name, show: true })
                 }
               >
-                {activeBoard.name}
+                {currentBoard.name}
               </h1>
             )}
           </BoardTitle>
@@ -119,7 +128,7 @@ export default function Board({ state, dispatch }) {
             dispatch={dispatch}
             handleModalOpen={handleModalOpen}
             setOpen={setOpen}
-            activeBoard={activeBoard}
+            currentBoard={currentBoard}
           />
           {renderEditCard()}
         </>

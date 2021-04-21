@@ -11,13 +11,12 @@ export default function Cards({
   setOpen,
   state,
   dispatch,
-  activeBoard,
+  currentBoard,
 }) {
-  const [card, setCard] = useState(cardData.data);
   const [comment, setComment] = useState("");
   const [description, setDescription] = useState({
-    edit: card.description === "" ? true : false,
-    desc: card.description,
+    edit: cardData.data.description === "" ? true : false,
+    desc: cardData.data.description,
   });
   const [editCardTitle, setEditCardTitle] = useState({
     title: "",
@@ -28,61 +27,67 @@ export default function Cards({
       ? `${new Date().getHours() - 12}:${new Date().getMinutes()}PM`
       : `${new Date().getHours()}:${new Date().getMinutes()}AM`;
   const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
+  const currentList = currentBoard.lists.find(
+    (list) => list.title === cardData.listTitle
+  );
+  const currentCard = currentList.cards[cardData.cardIndex];
 
   const addComment = () => {
-    const newComment = [
-      ...card.comments,
-      {
-        text: comment,
-        created: timeStamp,
-      },
-    ];
-    card.comments = newComment;
-    setCard(card);
+    const newComment = {
+      text: comment,
+      created: timeStamp,
+    };
+    currentCard.comments = [...currentCard.comments, newComment];
     setComment("");
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
   };
 
   const addDescription = () => {
-    card.description = description.desc;
-    setCard(card);
+    currentCard.description = description.desc;
     setDescription({ edit: false, desc: "" });
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
   };
 
   const deleteCard = () => {
     setOpen(false);
-
-    const currentList = activeBoard.lists.find(
-      (list) => list.title === cardData.listTitle
+    currentList.cards = currentList.cards.filter(
+      (card) => card.title !== currentCard.title
     );
-    const newCardList = currentList.cards.filter(
-      (card) => card.title !== cardData.data.title
-    );
-    const currentListIndex = activeBoard.lists.findIndex(
-      (list) => list.title === currentList.title
-    );
-    activeBoard.lists[currentListIndex].cards = newCardList;
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
   };
 
   const changeCardTitle = () => {
-    const newList = activeBoard.lists.find(
+    const newList = currentBoard.lists.find(
       (list) => list.title === cardData.listTitle
     );
     newList.cards[cardData.cardIndex].title = editCardTitle.title;
 
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
-      payload: { newBoard: [activeBoard] },
+      payload: { newBoard: state.board },
     });
-
     setEditCardTitle({ title: "", edit: false });
   };
 
   const deleteComments = (commentIndex) => {
-    const newList = activeBoard.lists.find(
+    const newList = currentBoard.lists.find(
       (list) => list.title === cardData.listTitle
     );
     newList.cards[cardData.cardIndex].comments.splice(commentIndex, 1);
     setEditCardTitle({ title: "", edit: false });
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
   };
 
   return (
@@ -92,7 +97,7 @@ export default function Cards({
           {editCardTitle.edit ? (
             <input
               autoFocus={true}
-              defaultValue={card.title}
+              defaultValue={cardData.data.title}
               onChange={(e) =>
                 setEditCardTitle({ title: e.target.value, edit: true })
               }
@@ -104,16 +109,16 @@ export default function Cards({
           ) : (
             <h1
               onClick={() =>
-                setEditCardTitle({ title: card.title, edit: true })
+                setEditCardTitle({ title: cardData.data.title, edit: true })
               }
             >
-              {card.title}
+              {cardData.data.title}
             </h1>
           )}
 
           <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
         </div>
-        <CardTimeStamp>Created {card.timeStamp}</CardTimeStamp>
+        <CardTimeStamp>Created {cardData.data.timeStamp}</CardTimeStamp>
         <div>in list {cardData.cardTitle}</div>
       </CardHeader>
       <CardContentWrapper>
@@ -123,7 +128,10 @@ export default function Cards({
               <h2>Description</h2>
               <MenuItem
                 onClick={() =>
-                  setDescription({ edit: true, desc: card.description })
+                  setDescription({
+                    edit: true,
+                    desc: cardData.data.description,
+                  })
                 }
               >
                 Edit
@@ -142,7 +150,7 @@ export default function Cards({
                   }}
                 />
               ) : (
-                <div>{card.description}</div>
+                <div>{cardData.data.description}</div>
               )}
             </div>
           </Description>
@@ -152,9 +160,9 @@ export default function Cards({
             </div>
             <div>
               <Comments>
-                {card.comments ? (
+                {cardData.data.comments ? (
                   <>
-                    {card.comments.map((comment, index) => (
+                    {cardData.data.comments.map((comment, index) => (
                       <div key={index}>
                         <div>
                           <span>{comment.text}</span>

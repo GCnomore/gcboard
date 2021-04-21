@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Weather from "./Weather";
 import News from "./News";
 import TimeAndDate from "./TimeAndDate";
@@ -9,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
-export default function HeaderMenu({ state, dispatch, setBoardList }) {
+export default function HeaderMenu({ dispatch, setBoardList }) {
   return (
     <HeaderMenuWrapper>
       <Grid container>

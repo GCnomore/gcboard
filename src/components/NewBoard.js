@@ -12,6 +12,8 @@ export default function NewBoard({
   addNewBoard,
   state,
   dispatch,
+  setCreateNew,
+  currentBoard,
 }) {
   const boardTypes = [
     {
@@ -87,11 +89,16 @@ export default function NewBoard({
   const [selectedType, setSelectedType] = useState("");
 
   const createNewBoard = () => {
+    if (currentBoard) {
+      currentBoard.selected = false;
+    }
+
     const board = boardTypes.find((board) => board.name === selectedType);
     newBoard.type = selectedType;
     newBoard.lists = board.template;
     setNewBoard(newBoard);
     addNewBoard();
+    setCreateNew(false);
   };
 
   const errorModalOpen = (message) => {

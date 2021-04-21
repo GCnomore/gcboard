@@ -3,7 +3,7 @@ import Board from "./components/Board";
 import BoardList from "./components/BoardList";
 import bgImg from "./assets/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.jpg";
 import styled from "styled-components/macro";
-import { useReducer, useState } from "react";
+import { useReducer, useState, useEffect } from "react";
 
 import Modal from "@material-ui/core/Modal";
 
@@ -47,7 +47,7 @@ function reducer(state, action) {
     case ACTIONS.CURRENT_BOARD:
       return {
         ...state,
-        currentBoard: action.payload.newBoard,
+        board: action.payload.newBoard,
       };
     default:
       return {};
@@ -69,19 +69,22 @@ export default function App() {
       title: "",
     },
     showModal: { show: false, message: "" },
-    currentBoard: localStorage.getItem("gc_board_data")
-      ? [
-          JSON.parse(localStorage.getItem("gc_board_data")).find(
-            (board) => board.selected === true
-          ),
-        ]
+    board: localStorage.getItem("gc_board_data")
+      ? JSON.parse(localStorage.getItem("gc_board_data"))
       : [],
   });
   const [boardList, setBoardList] = useState({ show: false });
+  const [createNew, setCreateNew] = useState(false);
 
-  const handleModalOpen = () => {
-    setBoardList({ show: true });
-  };
+  useEffect(() => {
+    console.log("save local app@@@@@@@@@");
+    localStorage.setItem("gc_board_data", [JSON.stringify(state.board)]);
+    state.board.length === 0 && setBoardList({ show: false });
+  }, [state]);
+
+  const currentBoard = state.board.length
+    ? state.board.find((board) => board.selected === true)
+    : [];
 
   const handleModalClose = () => {
     setBoardList({ show: false });
@@ -95,7 +98,13 @@ export default function App() {
         boardList={boardList}
         setBoardList={setBoardList}
       />
-      <Board state={state} dispatch={dispatch} />
+      <Board
+        state={state}
+        dispatch={dispatch}
+        createNew={createNew}
+        setCreateNew={setCreateNew}
+        currentBoard={currentBoard}
+      />
       {boardList.show ? (
         <BoardListModal
           open={boardList.show}
@@ -103,7 +112,12 @@ export default function App() {
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          <BoardList />
+          <BoardList
+            setBoardList={setBoardList}
+            setCreateNew={setCreateNew}
+            state={state}
+            dispatch={dispatch}
+          />
         </BoardListModal>
       ) : null}
     </AppContainer>

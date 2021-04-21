@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@material-ui/core/Button";
 import Error from "./Error";
@@ -18,16 +18,15 @@ export default function Lists({
   dispatch,
   handleModalOpen,
   setOpen,
-  activeBoard,
+  currentBoard,
 }) {
-  const currentBoard = state.currentBoard.filter((board) => board.selected);
   const [card, setCard] = useState("");
   const [editListTitle, setEditListTitle] = useState({
     listTitle: "",
     edit: false,
   });
 
-  const { lists } = currentBoard[0];
+  const { lists } = currentBoard;
 
   editListTitle.edit &&
     window.addEventListener(
@@ -35,10 +34,6 @@ export default function Lists({
       (e) =>
         e.code === "Escape" && setEditListTitle({ listTitle: "", edit: false })
     );
-
-  useEffect(() => {
-    localStorage.setItem("gc_board_data", [JSON.stringify(currentBoard)]);
-  }, [currentBoard]);
 
   const renderAddCard = (index, listTitle) => {
     const show = state.showAddCard
@@ -90,15 +85,14 @@ export default function Lists({
 
   const renderCards = (listTitle) => {
     if (lists.length !== 0) {
-      const cards = lists.filter((list) => list.title === listTitle);
-
-      return cards[0].cards.map((item, index) => {
+      const currentList = lists.filter((list) => list.title === listTitle);
+      return currentList[0].cards.map((item, index) => {
         return (
           <ListItems
             key={index}
             onClick={() => {
               setOpen(true);
-              handleModalOpen(item, cards[0].title, index);
+              handleModalOpen(item, currentList[0].title, index);
             }}
           >
             {item.title}
@@ -203,35 +197,20 @@ export default function Lists({
     };
     const list = lists.find((item) => item.title === listTitle);
     list.cards = [...list.cards, newCard];
-    const newList = [...lists];
-    const newBoard = {
-      name: currentBoard[0].name,
-      selected: currentBoard[0].selected,
-      lists: newList,
-      id: currentBoard[0].id,
-      type: currentBoard[0].type,
-    };
+
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
-      payload: { newBoard: [newBoard] },
+      payload: { newBoard: [...state.board] },
     });
     setCard("");
   };
 
   const addList = () => {
     if (state.addList.title !== "") {
-      const newBoard = {
-        name: currentBoard[0].name,
-        selected: currentBoard[0].selected,
-        lists: lists
-          ? [...lists, { title: state.addList.title, cards: [] }]
-          : [{ title: state.addList.title, cards: [] }],
-        type: currentBoard[0].type,
-        id: currentBoard[0].id,
-      };
+      lists.push({ title: state.addList.title, cards: [] });
       dispatch({
         type: ACTIONS.CURRENT_BOARD,
-        payload: { newBoard: [newBoard] },
+        payload: { newBoard: [...state.board] },
       });
       dispatch({ type: ACTIONS.ADD_LIST, add: false, value: "" });
     } else {
@@ -242,11 +221,11 @@ export default function Lists({
   const deleteList = (listTitle) => {
     const updatedList = lists.filter((item) => item.title !== listTitle);
     const newBoard = {
-      name: currentBoard[0].name,
-      selected: currentBoard[0].selected,
+      name: currentBoard.name,
+      selected: currentBoard.selected,
       lists: updatedList,
-      type: currentBoard[0].type,
-      id: currentBoard[0].id,
+      type: currentBoard.type,
+      id: currentBoard.id,
     };
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
@@ -255,8 +234,10 @@ export default function Lists({
   };
 
   const changeListName = () => {
-    const newBoard = state.currentBoard;
-    dispatch({ type: ACTIONS.CURRENT_BOARD, payload: { newBoard } });
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
     setEditListTitle({ listTitle: "", edit: false });
   };
 
@@ -294,7 +275,7 @@ export default function Lists({
                     <input
                       defaultValue={item.title}
                       onChange={(e) => {
-                        activeBoard.lists[index].title = e.target.value;
+                        currentBoard.lists[index].title = e.target.value;
                       }}
                       onKeyDown={(e) =>
                         e.target.value !== "" &&

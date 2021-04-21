@@ -77,11 +77,13 @@ const MenuItem = styled.button`
   color: #fff;
   font-weight: 600;
   transition: 0.25s;
+
   &:hover {
     opacity: 0.7;
     transition: 0.25s;
     cursor: pointer;
   }
+
   &:active {
     background-color: #1c1c1b;
     opacity: 1;

@@ -99,10 +99,11 @@ const WeatherContainer = styled.div`
 
   > div:nth-child(2) {
     > img {
-      width: 5rem;
+      width: 4.5rem;
     }
 
     > h2 {
+      font-size: 1.2rem;
       margin: 0 0.5rem;
     }
   }

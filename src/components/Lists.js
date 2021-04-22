@@ -95,7 +95,19 @@ export default function Lists({
               handleModalOpen(item, currentList[0].title, index);
             }}
           >
-            {item.title}
+            <div>{item.title}</div>
+            <div>
+              {item.labels
+                ? item.labels.map(
+                    (label) =>
+                      label.selected && (
+                        <>
+                          <LabelBox color={label.color} />
+                        </>
+                      )
+                  )
+                : null}
+            </div>
           </ListItems>
         );
       });
@@ -401,9 +413,14 @@ const ListItems = styled.div`
   cursor: pointer;
   transition: 0.5s;
   box-shadow: 0 0 3px 0.2px white;
+  display: flex;
+  justify-content: space-between;
   &:hover {
     filter: brightness(70%);
     transition: 0.75s;
+  }
+  > div:nth-child(2) {
+    display: flex;
   }
 `;
 
@@ -497,4 +514,10 @@ const ListMenu = styled.div`
     padding: 0.5rem 0;
     cursor: pointer;
   }
+`;
+
+const LabelBox = styled.div`
+  background-color: ${(props) => (props.color ? props.color : null)};
+  width: 1.2rem;
+  height: inherit;
 `;

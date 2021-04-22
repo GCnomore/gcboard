@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components/macro";
 import { ACTIONS } from "../App";
+import Modal from "@material-ui/core/Modal";
 
 export default function Cards({
   cardData,
@@ -22,17 +23,38 @@ export default function Cards({
     title: "",
     edit: false,
   });
-  const time =
-    new Date().getHours() > 12
-      ? `${new Date().getHours() - 12}:${new Date().getMinutes()}PM`
-      : `${new Date().getHours()}:${new Date().getMinutes()}AM`;
-  const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
   const currentList = currentBoard.lists.find(
     (list) => list.title === cardData.listTitle
   );
   const currentCard = currentList.cards[cardData.cardIndex];
+  const [addLabel, setAddLabel] = useState({
+    show: false,
+    labels: {
+      label1: {
+        color: currentCard.labels ? currentCard.labels[0].color : "#85FF99",
+        selected: currentCard.labels ? currentCard.labels[0].selected : false,
+      },
+      label2: {
+        color: currentCard.labels ? currentCard.labels[1].color : "#FFDD80",
+        selected: currentCard.labels ? currentCard.labels[1].selected : false,
+      },
+      label3: {
+        color: currentCard.labels ? currentCard.labels[2].color : "#5092FB",
+        selected: currentCard.labels ? currentCard.labels[2].selected : false,
+      },
+      label4: {
+        color: currentCard.labels ? currentCard.labels[3].color : "#FF6B90",
+        selected: currentCard.labels ? currentCard.labels[3].selected : false,
+      },
+    },
+  });
 
   const addComment = () => {
+    const time =
+      new Date().getHours() > 12
+        ? `${new Date().getHours() - 12}:${new Date().getMinutes()}PM`
+        : `${new Date().getHours()}:${new Date().getMinutes()}AM`;
+    const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
     const newComment = {
       text: comment,
       created: timeStamp,
@@ -90,8 +112,198 @@ export default function Cards({
     });
   };
 
+  const onModalClose = () => {
+    setAddLabel((prev) => {
+      return { show: false, labels: prev.labels };
+    });
+
+    currentCard.labels = [
+      addLabel.labels.label1,
+      addLabel.labels.label2,
+      addLabel.labels.label3,
+      addLabel.labels.label4,
+    ];
+    dispatch({
+      type: ACTIONS.CURRENT_BOARD,
+      payload: { newBoard: state.board },
+    });
+  };
+
   return (
     <CardsContainer>
+      <AddLabelModal
+        open={addLabel.show}
+        onClose={onModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <AddLabelContainer>
+          <header>
+            <h1>Add Labels</h1>
+          </header>
+          <main>
+            <ul>
+              <li>
+                <input
+                  type="color"
+                  name="label1"
+                  value={addLabel.labels.label1.color}
+                  onChange={(e) =>
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label1: {
+                            color: e.target.value,
+                            selected: prev.labels.label1.selected,
+                          },
+                        },
+                      };
+                    })
+                  }
+                />
+                <input
+                  type="checkbox"
+                  checked={addLabel.labels.label1.selected}
+                  onChange={(e) => {
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label1: {
+                            color: prev.labels.label1.color,
+                            selected: e.target.checked ? true : false,
+                          },
+                        },
+                      };
+                    });
+                  }}
+                />
+              </li>
+              <li>
+                <input
+                  type="color"
+                  name="label2"
+                  value={addLabel.labels.label2.color}
+                  onChange={(e) =>
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label2: {
+                            color: e.target.value,
+                            selected: prev.labels.label2.selected,
+                          },
+                        },
+                      };
+                    })
+                  }
+                />
+                <input
+                  type="checkbox"
+                  checked={addLabel.labels.label2.selected}
+                  onChange={(e) => {
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label2: {
+                            color: prev.labels.label2.color,
+                            selected: e.target.checked ? true : false,
+                          },
+                        },
+                      };
+                    });
+                  }}
+                />
+              </li>
+              <li>
+                <input
+                  type="color"
+                  name="label3"
+                  value={addLabel.labels.label3.color}
+                  onChange={(e) =>
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label3: {
+                            color: e.target.value,
+                            selected: prev.labels.label3.selected,
+                          },
+                        },
+                      };
+                    })
+                  }
+                />
+                <input
+                  type="checkbox"
+                  checked={addLabel.labels.label3.selected}
+                  onChange={(e) => {
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label3: {
+                            color: prev.labels.label3.color,
+                            selected: e.target.checked ? true : false,
+                          },
+                        },
+                      };
+                    });
+                  }}
+                />
+              </li>
+              <li>
+                <input
+                  type="color"
+                  name="label4"
+                  value={addLabel.labels.label4.color}
+                  onChange={(e) =>
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label4: {
+                            color: e.target.value,
+                            selected: prev.labels.label4.selected,
+                          },
+                        },
+                      };
+                    })
+                  }
+                />
+                <input
+                  type="checkbox"
+                  checked={addLabel.labels.label4.selected}
+                  onChange={(e) => {
+                    setAddLabel((prev) => {
+                      return {
+                        show: prev.show,
+                        labels: {
+                          ...prev.labels,
+                          label4: {
+                            color: prev.labels.label4.color,
+                            selected: e.target.checked ? true : false,
+                          },
+                        },
+                      };
+                    });
+                  }}
+                />
+              </li>
+            </ul>
+          </main>
+        </AddLabelContainer>
+      </AddLabelModal>
+
       <CardHeader>
         <div>
           {editCardTitle.edit ? (
@@ -107,13 +319,23 @@ export default function Cards({
               }
             />
           ) : (
-            <h1
-              onClick={() =>
-                setEditCardTitle({ title: cardData.data.title, edit: true })
-              }
-            >
-              {cardData.data.title}
-            </h1>
+            <div>
+              <h1
+                onClick={() =>
+                  setEditCardTitle({ title: cardData.data.title, edit: true })
+                }
+              >
+                {cardData.data.title}
+              </h1>
+              <div>
+                {cardData.data.labels
+                  ? cardData.data.labels.map(
+                      (label) =>
+                        label.selected && <LabelBox color={label.color} />
+                    )
+                  : null}
+              </div>
+            </div>
           )}
 
           <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
@@ -194,14 +416,16 @@ export default function Cards({
           <div className="addToCard">
             <h2>Add to card</h2>
             <div>
-              <MenuItem>Label</MenuItem>
-              <MenuItem>Checklist</MenuItem>
+              <MenuItem
+                onClick={() =>
+                  setAddLabel({ show: true, labels: addLabel.labels })
+                }
+              >
+                Label
+              </MenuItem>
               <MenuItem>Start Date</MenuItem>
               <MenuItem>Due Date</MenuItem>
               <MenuItem>Attachment</MenuItem>
-              <MenuItem>Cover</MenuItem>
-              <MenuItem>Label</MenuItem>
-              <MenuItem>Label</MenuItem>
             </div>
           </div>
           <div className="actions">
@@ -254,17 +478,24 @@ const CardHeader = styled.div`
     display: flex;
     justify-content: space-between;
 
-    > h1 {
-      margin: 0;
-    }
-
     > svg {
       cursor: pointer;
       font-size: 1.5rem;
     }
-  }
 
-  > div:nth-child(1) {
+    > div:nth-child(1) {
+      display: flex;
+
+      > h1 {
+        margin: 0;
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+        margin-left: 1rem;
+      }
+    }
     > input {
       height: 2rem;
       align-self: center;
@@ -413,4 +644,44 @@ const MenuItem = styled.a`
 const CardTimeStamp = styled.div`
   font-size: 0.7rem;
   margin: 0.3rem 0 1.5rem 0;
+`;
+
+const AddLabelModal = styled(Modal)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const AddLabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 2rem;
+
+  > header {
+    text-align: center;
+  }
+
+  > main {
+    > ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+
+      > li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 1rem;
+      }
+    }
+  }
+`;
+
+const LabelBox = styled.div`
+  background-color: ${(props) => (props.color ? props.color : null)};
+  width: 1.2rem;
+  height: 1.2rem;
 `;

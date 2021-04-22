@@ -1,6 +1,6 @@
 import Error from "./Error";
 import { ACTIONS } from "../App";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
@@ -88,17 +88,28 @@ export default function NewBoard({
   ];
   const [selectedType, setSelectedType] = useState("");
 
-  const createNewBoard = () => {
-    if (currentBoard) {
-      currentBoard.selected = false;
-    }
+  useEffect(() => {
+    window.addEventListener(
+      "keydown",
+      (e) => e.key === "Escape" && setCreateNew(false)
+    );
+  }, []);
 
-    const board = boardTypes.find((board) => board.name === selectedType);
-    newBoard.type = selectedType;
-    newBoard.lists = board.template;
-    setNewBoard(newBoard);
-    addNewBoard();
-    setCreateNew(false);
+  const createNewBoard = () => {
+    if (state.board.find((board) => board.name === newBoard.name)) {
+      errorModalOpen("Can't add board with same name");
+      return;
+    } else {
+      if (currentBoard) {
+        currentBoard.selected = false;
+      }
+      const board = boardTypes.find((board) => board.name === selectedType);
+      newBoard.type = selectedType;
+      newBoard.lists = board.template;
+      setNewBoard(newBoard);
+      addNewBoard();
+      setCreateNew(false);
+    }
   };
 
   const errorModalOpen = (message) => {

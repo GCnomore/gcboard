@@ -97,6 +97,7 @@ export default function App() {
         dispatch={dispatch}
         boardList={boardList}
         setBoardList={setBoardList}
+        setCreateNew={setCreateNew}
       />
       <Board
         state={state}

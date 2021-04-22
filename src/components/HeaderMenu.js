@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
-export default function HeaderMenu({ dispatch, setBoardList }) {
+export default function HeaderMenu({ dispatch, setBoardList, setCreateNew }) {
   return (
     <HeaderMenuWrapper>
       <Grid container>
@@ -17,7 +17,7 @@ export default function HeaderMenu({ dispatch, setBoardList }) {
         </LeftSection>
         {/* <News /> */}
         <RightSection>
-          <MenuItem href="/">
+          <MenuItem onClick={() => setCreateNew(true)}>
             <FontAwesomeIcon icon={faPlus} />
           </MenuItem>
           <MenuItem href="/">

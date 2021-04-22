@@ -40,13 +40,12 @@ export default function BoardList({
       </header>
       <ContentsContainer>
         <section>
-          {state.board.map((board) => (
+          {state.board.map((board, index) => (
             <BoardItem
+              key={index}
               onClick={() => setSelectedBoard(board)}
               selected={
-                selectedBoard && selectedBoard.id === board.id
-                  ? "true"
-                  : "false"
+                selectedBoard && selectedBoard.id === board.id ? true : false
               }
             >
               <h2>{board.name}</h2>
@@ -106,6 +105,7 @@ const ContentsContainer = styled.main`
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
 
       > h2 {
         cursor: pointer;
@@ -120,5 +120,5 @@ const BoardItem = styled.div`
   height: fit-content;
   text-align: center;
   background-color: ${(props) =>
-    props.selected === "true" ? "rgba(255, 255, 255, 0.1);" : "transparent"};
+    props.selected ? "rgba(255, 255, 255, 0.1);" : "transparent"};
 `;

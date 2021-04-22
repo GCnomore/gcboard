@@ -317,6 +317,7 @@ export default function Cards({
                 (e.code === "Enter" || e.code === "NumpadEnter") &&
                 changeCardTitle()
               }
+              onFocus={(e) => e.target.select()}
             />
           ) : (
             <div>
@@ -330,8 +331,10 @@ export default function Cards({
               <div>
                 {cardData.data.labels
                   ? cardData.data.labels.map(
-                      (label) =>
-                        label.selected && <LabelBox color={label.color} />
+                      (label, index) =>
+                        label.selected && (
+                          <LabelBox key={index} color={label.color} />
+                        )
                     )
                   : null}
               </div>
@@ -488,6 +491,7 @@ const CardHeader = styled.div`
 
       > h1 {
         margin: 0;
+        cursor: pointer;
       }
 
       > div {
@@ -675,6 +679,11 @@ const AddLabelContainer = styled.div`
         justify-content: center;
         align-items: center;
         margin: 0 1rem;
+
+        > input:nth-child(2) {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
       }
     }
   }

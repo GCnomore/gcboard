@@ -99,11 +99,9 @@ export default function Lists({
             <div>
               {item.labels
                 ? item.labels.map(
-                    (label) =>
+                    (label, index) =>
                       label.selected && (
-                        <>
-                          <LabelBox color={label.color} />
-                        </>
+                        <LabelBox key={index} color={label.color} />
                       )
                   )
                 : null}
@@ -203,9 +201,7 @@ export default function Lists({
       title: card,
       timeStamp,
       description: "",
-      comments: [
-        { text: `This card was created by Isaac`, created: timeStamp },
-      ],
+      comments: [{ text: `Card created`, created: timeStamp }],
     };
     const list = lists.find((item) => item.title === listTitle);
     list.cards = [...list.cards, newCard];
@@ -416,8 +412,8 @@ const ListItems = styled.div`
   display: flex;
   justify-content: space-between;
   &:hover {
-    filter: brightness(70%);
-    transition: 0.75s;
+    filter: brightness(50%);
+    transition: 0.5s;
   }
   > div:nth-child(2) {
     display: flex;

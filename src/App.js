@@ -126,9 +126,9 @@ export default function App() {
 }
 
 const AppContainer = styled.div`
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: 50%;
+  background-position: center;
   height: 100vh;
   background-image: url(${bgImg});
 `;

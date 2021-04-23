@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ACTIONS } from "../App";
 
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export default function BoardList({
   setBoardList,
@@ -10,6 +10,13 @@ export default function BoardList({
   dispatch,
 }) {
   const [selectedBoard, setSelectedBoard] = useState();
+
+  useEffect(() => {
+    window.addEventListener(
+      "keydown",
+      (e) => e.key === "Escape" && setBoardList({ show: false })
+    );
+  }, []);
 
   const createNewBoard = () => {
     setBoardList({ show: false });
@@ -36,7 +43,7 @@ export default function BoardList({
   return (
     <BoardListContainer>
       <header>
-        <BoardListTitle>Created Boards</BoardListTitle>
+        <BoardListTitle>Boards List</BoardListTitle>
       </header>
       <ContentsContainer>
         <section>
@@ -69,6 +76,7 @@ const BoardListContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
   color: white;
   height: 60vh;
   width: 70vw;
@@ -78,7 +86,7 @@ const BoardListTitle = styled.h1`
   text-align: center;
   margin: 0;
   font-size: 2rem;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
   padding: 2rem 0;
   text-shadow: 3px 3px 4px rgba(255, 255, 255, 0.4);
 `;
@@ -98,7 +106,7 @@ const ContentsContainer = styled.main`
 
   > section:nth-child(2) {
     flex: 1;
-    border-left: 2px solid rgba(255, 255, 255, 0.3);
+    border-left: 2px solid rgba(255, 255, 255, 0.7);
     background-color: rgba(0, 0, 0, 0.5);
 
     > div {
@@ -121,4 +129,5 @@ const BoardItem = styled.div`
   text-align: center;
   background-color: ${(props) =>
     props.selected ? "rgba(255, 255, 255, 0.1);" : "transparent"};
+  transition: 0.3s ease-in-out;
 `;

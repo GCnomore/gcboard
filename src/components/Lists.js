@@ -499,7 +499,7 @@ const AddAnotherList = styled(List)``;
 
 const ListMenu = styled.div`
   position: absolute;
-  background-color: rgba(102, 101, 99, 0.568);
+  background-color: rgba(0, 0, 0, 0.568);
   backdrop-filter: blur(1.5px);
   width: 95.5%;
   text-align: center;
@@ -509,6 +509,11 @@ const ListMenu = styled.div`
   > div {
     padding: 0.5rem 0;
     cursor: pointer;
+    transition: 0.3s ease-in-out;
+    &:hover {
+      filter: brightness(50%);
+      transition: 0.3s ease-in-out;
+    }
   }
 `;
 

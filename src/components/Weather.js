@@ -100,6 +100,7 @@ const WeatherContainer = styled.div`
   > div:nth-child(2) {
     > img {
       width: 4.5rem;
+      height: auto;
     }
 
     > h2 {

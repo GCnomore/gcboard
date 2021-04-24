@@ -26,6 +26,7 @@ A Trello inspired task management application.
 <br/>
 <br/>
 <br/>
+
 ### Techs Used❗
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ React<br/>
@@ -39,24 +40,30 @@ A Trello inspired task management application.
 <br/>
 <br/>
 <br/>
+
 # Create New Board
 <br/>
+
 ![screenshot1](./src/assets/screenshots/screenshot1.png)
 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
+
 # Kanban Board Sample
 <br/>
+
 ![screenshot2](./src/assets/screenshots/screenshot2.png)
 <br/>
 <br/>
 <br/>
 <br/>
 <br/>
+
 # Adding Labels To a Card
 <br/>
+
 **_Provides 4 color options. Each color options can be customized._**
 ![screenshot3](./src/assets/screenshots/screenshot3.png)
 <br/>
@@ -64,8 +71,10 @@ A Trello inspired task management application.
 <br/>
 <br/>
 <br/>
+
 # Editing Card
 <br/>
+
 **_In each card, users can add/edit description, label, and comments._**
 ![screenshot4](./src/assets/screenshots/screenshot4.png)
 <br/>
@@ -73,7 +82,9 @@ A Trello inspired task management application.
 <br/>
 <br/>
 <br/>
+
 # Boards List
 <br/>
+
 **_Here, users can create, delete, and switch between their boards._**
 ![screenshot5](./src/assets/screenshots/screenshot5.png)

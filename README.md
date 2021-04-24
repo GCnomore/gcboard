@@ -1,17 +1,15 @@
 # GC Board📋📌
-
-##
+<br/>
+<br/>
 
 **_On-going project_**
-
+<br/>
 A Trello inspired task management application.
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
 ### Key Features❗
-
+<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✅ Multiple choices of board templates. (Currently only Kanban and Project Management😒)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✅ Displays weather info⛅, time and date📅 on top of the board.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✅ Create custom boards📋.<br/>
@@ -25,91 +23,57 @@ A Trello inspired task management application.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔜 Sort option on lists.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔜 Change background image.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔜 Save custom made templates.<br/>
-
-##
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
 ## Techs Used❗
-
+<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ React<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ Styled Components<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ Prop-Types<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ Axios<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ UUID<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ GH Pages<br/>
-
-##
-
-##
-
-##
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # Create New Board
-
+<br/>
 ![screenshot1](./src/assets/screenshots/screenshot1.png)
-
-##
-
-##
-
-##
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # Kanban Board Sample
-
+<br/>
 ![screenshot2](./src/assets/screenshots/screenshot2.png)
-
-##
-
-##
-
-##
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # Adding Labels To a Card
-
+<br/>
 **_Provides 4 color options. Each color options can be customized._**
 ![screenshot3](./src/assets/screenshots/screenshot3.png)
-
-##
-
-##
-
-##
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # Editing Card
-
+<br/>
 **_In each card, users can add/edit description, label, and comments._**
 ![screenshot4](./src/assets/screenshots/screenshot4.png)
-
-##
-
-##
-
-##
-
-##
-
-##
-
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 # Boards List
-
+<br/>
 **_Here, users can create, delete, and switch between their boards._**
 ![screenshot5](./src/assets/screenshots/screenshot5.png)

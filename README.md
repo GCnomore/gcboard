@@ -1,70 +1,115 @@
-# Getting Started with Create React App
+# GC Board📋📌
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##
 
-## Available Scripts
+**_On-going project_**
 
-In the project directory, you can run:
+A Trello inspired task management application.
 
-### `npm start`
+##
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+##
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Key Features❗
 
-### `npm test`
+$~~~~~$ ✅ Multiple choices of board templates. (Currently only Kanban and Project Management😒)
+$~~~~~$ ✅ Displays weather info⛅, time and date📅 on top of the board.
+$~~~~~$ ✅ Create custom boards📋.
+$~~~~~$ ✅ Create multiple boards📋📋📋.
+$~~~~~$ ✅ Create multiples lists, and cards that will go along with them🍴.
+$~~~~~$ ✅ Labeling cards by their category, types, etc. 💴💵💶💷(4 color available and adjustable)
+$~~~~~$ ✅ Add description to the cards and record works done by commenting on cards.
+$~~~~~$ ✅ A theme for dark theme lovers😎😎.
+$~~~~~$ ✅ Saves board data to browser's 🌐local storage.
+$~~~~~$ 🔜 Drag and drop to move the lists and cards.
+$~~~~~$ 🔜 Sort option on lists.
+$~~~~~$ 🔜 Change background image.
+$~~~~~$ 🔜 Save custom made templates.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##
 
-### `npm run build`
+##
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+##
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Techs Used❗
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+$~~~~~$ ✌ React
+$~~~~~$ ✌ Styled Components
+$~~~~~$ ✌ Prop-Types
+$~~~~~$ ✌ Axios
+$~~~~~$ ✌ UUID
+$~~~~~$ ✌ GH Pages
 
-### `npm run eject`
+##
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+##
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+##
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+##
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+##
 
-## Learn More
+# Create New Board
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![Screenshot from 2021-04-23 18-32-18.png](:/a78f802a4af74d449192af4b9cdfb744)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+##
 
-### Code Splitting
+##
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+##
 
-### Analyzing the Bundle Size
+##
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+##
 
-### Making a Progressive Web App
+# Kanban Board Sample
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![Screenshot from 2021-04-23 18-35-12.png](:/749acc94e9394d7ea5479720ad4665b0)
 
-### Advanced Configuration
+##
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+##
 
-### Deployment
+##
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+##
 
-### `npm run build` fails to minify
+##
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Adding Labels To a Card
+
+**_Provides 4 color options. Each color options can be customized._**
+![Screenshot from 2021-04-23 18-37-13.png](:/af3386ebd53d4161aa5832d93f8cbac0)
+
+##
+
+##
+
+##
+
+##
+
+##
+
+# Editing Card
+
+**_In each card, users can add/edit description, label, and comments._**
+![Screenshot from 2021-04-23 18-38-51.png](:/3d152aa390fa420b89af91065b3ac644)
+
+##
+
+##
+
+##
+
+##
+
+##
+
+# Boards List
+
+**_Here, users can create, delete, and switch between their boards._**
+![Screenshot from 2021-04-23 18-41-03.png](:/e0347777579b43b1be3e9b7e2f21a409)

@@ -26,7 +26,7 @@ A Trello inspired task management application.
 <br/>
 <br/>
 <br/>
-## Techs Used❗
+### Techs Used❗
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ React<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ✌ Styled Components<br/>

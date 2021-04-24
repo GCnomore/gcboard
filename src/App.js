@@ -126,7 +126,7 @@ export default function App() {
 }
 
 const AppContainer = styled.div`
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   height: 100vh;

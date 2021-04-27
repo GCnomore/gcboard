@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Weather from "./Weather";
 import News from "./News";
 import TimeAndDate from "./TimeAndDate";
@@ -6,9 +7,20 @@ import styled from "styled-components/macro";
 
 import Grid from "@material-ui/core/Grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faInfoCircle,
+  faImage,
+} from "@fortawesome/free-solid-svg-icons";
 
-export default function HeaderMenu({ dispatch, setBoardList, setCreateNew }) {
+export default function HeaderMenu({
+  dispatch,
+  setBoardList,
+  setCreateNew,
+  getBGimage,
+}) {
+  const [showImgInput, setShowImgInput] = useState(false);
+
   return (
     <HeaderMenuWrapper>
       <Grid container>
@@ -17,6 +29,24 @@ export default function HeaderMenu({ dispatch, setBoardList, setCreateNew }) {
         </LeftSection>
         {/* <News /> */}
         <RightSection>
+          <MenuItem onClick={() => setShowImgInput(true)}>
+            {showImgInput ? (
+              <BGinput
+                placeholder="Search background"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && showImgInput) {
+                    getBGimage(e.target.value);
+                    setShowImgInput(false);
+                  } else if (e.key === "Escape" && showImgInput) {
+                    setShowImgInput(false);
+                  }
+                }}
+              />
+            ) : (
+              <FontAwesomeIcon icon={faImage} />
+            )}
+          </MenuItem>
           <MenuItem onClick={() => setCreateNew(true)}>
             <FontAwesomeIcon icon={faPlus} />
           </MenuItem>
@@ -88,4 +118,8 @@ const MenuItem = styled.button`
     background-color: #1c1c1b;
     opacity: 1;
   }
+`;
+
+const BGinput = styled.input`
+  outline: none;
 `;

@@ -78,8 +78,7 @@ const WeatherContainer = styled.div`
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem 0.25rem 0.5rem 0.25rem;
-  width: 20vw;
-  min-width: 20rem;
+  width: fit-content;
   height: fit-content;
   text-align: center;
   border-radius: 0.4rem;

@@ -4,6 +4,7 @@ import BoardList from "./components/BoardList";
 import bgImg from "./assets/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.jpg";
 import styled from "styled-components/macro";
 import { useReducer, useState, useEffect } from "react";
+import axios from "axios";
 
 import Modal from "@material-ui/core/Modal";
 
@@ -75,6 +76,11 @@ export default function App() {
   });
   const [boardList, setBoardList] = useState({ show: false });
   const [createNew, setCreateNew] = useState(false);
+  const [userBG, setUserBG] = useState(
+    localStorage.getItem("gcBoard_bgImg")
+      ? localStorage.getItem("gcBoard_bgImg")
+      : null
+  );
 
   useEffect(() => {
     console.log("save local app@@@@@@@@@");
@@ -90,14 +96,26 @@ export default function App() {
     setBoardList({ show: false });
   };
 
+  const getBGimage = async (input) => {
+    const image = await axios.get(
+      `https://source.unsplash.com/1600x900/?${input}`
+    );
+    setUserBG(image.request.responseURL);
+    localStorage.setItem(
+      "gcBoard_bgImg",
+      JSON.stringify(image.request.responseURL)
+    );
+  };
+
   return (
-    <AppContainer>
+    <AppContainer userBG={userBG}>
       <HeaderMenu
         state={state}
         dispatch={dispatch}
         boardList={boardList}
         setBoardList={setBoardList}
         setCreateNew={setCreateNew}
+        getBGimage={getBGimage}
       />
       <Board
         state={state}
@@ -130,7 +148,7 @@ const AppContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   height: 100vh;
-  background-image: url(${bgImg});
+  background-image: url(${(props) => (props.userBG ? props.userBG : bgImg)});
 `;
 
 const BoardListModal = styled(Modal)`

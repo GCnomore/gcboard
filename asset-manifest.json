@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/gcboard/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/gcboard/static/js/main.2ad0f905.chunk.js",
-    "main.js.map": "/gcboard/static/js/main.2ad0f905.chunk.js.map",
+    "main.js": "/gcboard/static/js/main.2d51fbbc.chunk.js",
+    "main.js.map": "/gcboard/static/js/main.2d51fbbc.chunk.js.map",
     "runtime-main.js": "/gcboard/static/js/runtime-main.7d6cd829.js",
     "runtime-main.js.map": "/gcboard/static/js/runtime-main.7d6cd829.js.map",
-    "static/js/2.c318045e.chunk.js": "/gcboard/static/js/2.c318045e.chunk.js",
-    "static/js/2.c318045e.chunk.js.map": "/gcboard/static/js/2.c318045e.chunk.js.map",
+    "static/js/2.4a9f8fb3.chunk.js": "/gcboard/static/js/2.4a9f8fb3.chunk.js",
+    "static/js/2.4a9f8fb3.chunk.js.map": "/gcboard/static/js/2.4a9f8fb3.chunk.js.map",
     "index.html": "/gcboard/index.html",
     "static/css/main.6dea0f05.chunk.css.map": "/gcboard/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.c318045e.chunk.js.LICENSE.txt": "/gcboard/static/js/2.c318045e.chunk.js.LICENSE.txt",
+    "static/js/2.4a9f8fb3.chunk.js.LICENSE.txt": "/gcboard/static/js/2.4a9f8fb3.chunk.js.LICENSE.txt",
     "static/media/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.7cf2f367.jpg": "/gcboard/static/media/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.7cf2f367.jpg",
     "static/media/rain.1e5fccd9.png": "/gcboard/static/media/rain.1e5fccd9.png",
     "static/media/thunderstorm.5d0ab16c.png": "/gcboard/static/media/thunderstorm.5d0ab16c.png"
   },
   "entrypoints": [
     "static/js/runtime-main.7d6cd829.js",
-    "static/js/2.c318045e.chunk.js",
+    "static/js/2.4a9f8fb3.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.2ad0f905.chunk.js"
+    "static/js/main.2d51fbbc.chunk.js"
   ]
 }

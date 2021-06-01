@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components/macro";
 
 export default function Error({ message }) {
   return (

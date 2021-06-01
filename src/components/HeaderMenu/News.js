@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { grabAndSlide } from "../api/api";
+import { grabAndSlide } from "../../api/api";
 import axios from "axios";
 import styled from "styled-components";
 

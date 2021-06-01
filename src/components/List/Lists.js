@@ -1,7 +1,5 @@
 import { ACTIONS } from "../../App";
-import { useCallback, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Error from "../Error";
 import PropTypes from "prop-types";
@@ -12,11 +10,7 @@ import { ItemTypes } from "./ItemTypes";
 import update from "immutability-helper";
 
 import styled from "styled-components/macro";
-import {
-  faEllipsisH,
-  faPlus,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Modal from "@material-ui/core/Modal";
 
 export default function Lists({
@@ -27,7 +21,6 @@ export default function Lists({
   handleModalOpen,
   setOpen,
   currentBoard,
-  setSort,
 }) {
   const [cardd, setCard] = useState("");
   const [editListTitle, setEditListTitle] = useState({
@@ -36,6 +29,10 @@ export default function Lists({
   });
   const show = state.showAddCard.id === index ? !state.showAddCard.show : true;
   const [dndList, setDndList] = useState(list.cards);
+
+  useEffect(() => {
+    setDndList(list.cards);
+  }, [list.cards]);
 
   const findCard = useCallback(
     (id) => {
@@ -99,15 +96,16 @@ export default function Lists({
   };
 
   const showErrorModal = (message) => {
+    console.log("modal");
     return (
-      <Modal
+      <Modall
         open={state.showModal.show}
         onClose={onModalClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
         <Error message={message} />
-      </Modal>
+      </Modall>
     );
   };
 
@@ -139,11 +137,7 @@ export default function Lists({
   return (
     <div>
       {showErrorModal(state.showModal.message)}
-      <List
-        className="list"
-        onMouseEnter={() => setSort(true)}
-        onMouseLeave={() => setSort(false)}
-      >
+      <List className="list">
         {state.listMenu
           ? state.listMenu.id === index &&
             state.listMenu.show &&
@@ -185,7 +179,6 @@ export default function Lists({
           {dndList.map((card, index) => {
             return (
               <ListItems
-                setSort={setSort}
                 key={index}
                 card={card}
                 listTitle={list.title}
@@ -351,4 +344,8 @@ const ListMenu = styled.div`
       transition: 0.3s ease-in-out;
     }
   }
+`;
+
+const Modall = styled(Modal)`
+  background-color: transparent;
 `;

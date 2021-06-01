@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import cloud from "../assets/weatherImg/cloud.png";
-import clearsky from "../assets/weatherImg/clearsky.png";
-import mist from "../assets/weatherImg/mist.png";
-import rain from "../assets/weatherImg/rain.png";
-import snow from "../assets/weatherImg/snow.png";
-import thunderstorm from "../assets/weatherImg/thunderstorm.png";
+import cloud from "../../assets/weatherImg/cloud.png";
+import clearsky from "../../assets/weatherImg/clearsky.png";
+import mist from "../../assets/weatherImg/mist.png";
+import rain from "../../assets/weatherImg/rain.png";
+import snow from "../../assets/weatherImg/snow.png";
+import thunderstorm from "../../assets/weatherImg/thunderstorm.png";
 
 export default function Weather() {
   const [weatherInfo, setWeather] = useState();

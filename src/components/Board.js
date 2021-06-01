@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Cards from "./Cards";
 import Lists from "./List/Lists";
 import NewBoard from "./NewBoard";
-import { grabAndSlide } from "../api/api";
 import { ACTIONS } from "../App";
 
 import Modal from "@material-ui/core/Modal";
@@ -22,7 +21,6 @@ export default function Board({
 }) {
   const [editCard, setEditCard] = useState();
   const [open, setOpen] = useState(false);
-  const [sort, setSort] = useState(false);
   const [newBoard, setNewBoard] = useState({
     name: "",
     selected: true,
@@ -197,7 +195,6 @@ export default function Board({
               {currentBoard.lists.map((list, index) => {
                 return (
                   <Lists
-                    setSort={setSort}
                     list={list}
                     key={index}
                     index={index}

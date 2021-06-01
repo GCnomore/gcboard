@@ -1,4 +1,4 @@
-import HeaderMenu from "./components/HeaderMenu";
+import HeaderMenu from "./components/HeaderMenu/HeaderMenu";
 import Board from "./components/Board";
 import BoardList from "./components/BoardList";
 import bgImg from "./assets/javascript-golden-logo-programming-language-brown-metal-background-creative-javascript-logo-besthqwallpapers.com-2133x1200.jpg";

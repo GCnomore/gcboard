@@ -197,7 +197,7 @@ export default function Board({
                   <Lists
                     list={list}
                     key={index}
-                    index={index}
+                    listIndex={index}
                     state={state}
                     dispatch={dispatch}
                     handleModalOpen={handleModalOpen}

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
+import { ACTIONS } from "../../App";
 
 export default function ListItems({
   card,
@@ -11,6 +12,10 @@ export default function ListItems({
   id,
   findCard,
   moveCard,
+  dndList,
+  listIndex,
+  currentBoard,
+  dispatch,
 }) {
   const originalIndex = findCard(id).index;
   const [{ isDragging }, drag] = useDrag(
@@ -26,6 +31,11 @@ export default function ListItems({
         if (!didDrop) {
           moveCard(droppedId, originalIndex);
         }
+        currentBoard.lists[listIndex].cards = dndList;
+        dispatch({
+          type: ACTIONS.CURRENT_BOARD,
+          payload: { newBoard: [currentBoard] },
+        });
       },
     }),
     [id, originalIndex, moveCard]

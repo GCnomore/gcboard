@@ -15,7 +15,7 @@ import Modal from "@material-ui/core/Modal";
 
 export default function Lists({
   list,
-  index,
+  listIndex,
   state,
   dispatch,
   handleModalOpen,
@@ -27,7 +27,8 @@ export default function Lists({
     listTitle: "",
     edit: false,
   });
-  const show = state.showAddCard.id === index ? !state.showAddCard.show : true;
+  const show =
+    state.showAddCard.id === listIndex ? !state.showAddCard.show : true;
   const [dndList, setDndList] = useState(list.cards);
 
   useEffect(() => {
@@ -96,7 +97,6 @@ export default function Lists({
   };
 
   const showErrorModal = (message) => {
-    console.log("modal");
     return (
       <Modall
         open={state.showModal.show}
@@ -109,9 +109,9 @@ export default function Lists({
     );
   };
 
-  const deleteList = (listTitle) => {
+  const deleteList = () => {
     const updatedList = currentBoard.lists.filter(
-      (item) => item.title !== listTitle
+      (item) => item.title !== list.title
     );
     const newBoard = {
       name: currentBoard.name,
@@ -139,14 +139,14 @@ export default function Lists({
       {showErrorModal(state.showModal.message)}
       <List className="list">
         {state.listMenu
-          ? state.listMenu.id === index &&
+          ? state.listMenu.id === listIndex &&
             state.listMenu.show &&
-            showListMenu(list.title, index)
+            showListMenu(list.title, listIndex)
           : null}
         <ListHeader>
           <div
             onClick={() => {
-              dispatch({ type: ACTIONS.LIST_MENU, index });
+              dispatch({ type: ACTIONS.LIST_MENU, listIndex });
             }}
           >
             <FontAwesomeIcon icon={faEllipsisH} />
@@ -160,7 +160,7 @@ export default function Lists({
               <input
                 defaultValue={list.title}
                 onChange={(e) => {
-                  currentBoard.lists[index].title = e.target.value;
+                  currentBoard.lists[listIndex].title = e.target.value;
                 }}
                 onKeyDown={(e) =>
                   e.target.value !== "" &&
@@ -188,13 +188,17 @@ export default function Lists({
                 handleModalOpen={handleModalOpen}
                 findCard={findCard}
                 moveCard={moveCard}
+                listIndex={listIndex}
+                dndList={dndList}
+                currentBoard={currentBoard}
+                dispatch={dispatch}
               />
             );
           })}
         </section>
         <section>
           <AddCard
-            index={index}
+            index={listIndex}
             listTitle={list.title}
             state={state}
             card={cardd}
@@ -206,7 +210,7 @@ export default function Lists({
           <AddAnotherCard
             show={show}
             onClick={() => {
-              dispatch({ type: ACTIONS.ADD_CARD, index });
+              dispatch({ type: ACTIONS.ADD_CARD, listIndex });
             }}
           >
             <FontAwesomeIcon icon={faPlus} /> Add another card

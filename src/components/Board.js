@@ -260,6 +260,16 @@ const BoardWrapper = styled.div`
   overflow-x: scroll;
   display: flex;
   z-index: -100;
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(147, 146, 146, 0.5);
+    border-radius: 12px;
+  }
   &:active {
     cursor: grabbing;
   }

@@ -27,7 +27,7 @@ function reducer(state, action) {
     case ACTIONS.ADD_CARD:
       return {
         ...state,
-        showAddCard: { id: action.index, show: !state.showAddCard.show },
+        showAddCard: { id: action.listIndex, show: !state.showAddCard.show },
       };
     case ACTIONS.ADD_LIST:
       return {

@@ -201,8 +201,6 @@ export default function Lists({
             index={listIndex}
             listTitle={list.title}
             state={state}
-            card={cardd}
-            setCard={setCard}
             lists={currentBoard.lists}
             dispatch={dispatch}
             errorModalOpen={errorModalOpen}

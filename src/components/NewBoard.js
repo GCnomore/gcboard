@@ -1,8 +1,7 @@
 import Error from "./Error";
 import { ACTIONS } from "../App";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components/macro";
 import Modal from "@material-ui/core/Modal";
 
@@ -96,7 +95,9 @@ export default function NewBoard({
   }, []);
 
   const createNewBoard = () => {
-    if (state.board.find((board) => board.name === newBoard.name)) {
+    if (
+      state.board.find((board) => board.name === newBoardNameRef.current.value)
+    ) {
       errorModalOpen("Can't add board with same name");
       return;
     } else {
@@ -104,11 +105,13 @@ export default function NewBoard({
         currentBoard.selected = false;
       }
       const board = boardTypes.find((board) => board.name === selectedType);
+      newBoard.name = newBoardNameRef.current.value;
       newBoard.type = selectedType;
       newBoard.lists = board.template;
       setNewBoard(newBoard);
       addNewBoard();
       setCreateNew(false);
+      newBoardNameRef.current.value = "";
     }
   };
 
@@ -136,6 +139,8 @@ export default function NewBoard({
     );
   };
 
+  const newBoardNameRef = useRef();
+
   return (
     <NewBoardContainer>
       {showErrorModal(state.showModal.message)}
@@ -143,19 +148,7 @@ export default function NewBoard({
         <h1>Create new board</h1>
       </div>
       <div>
-        <input
-          placeholder="Name of new board"
-          value={newBoard.name}
-          onChange={(e) => {
-            setNewBoard({
-              name: e.target.value,
-              selected: true,
-              lists: [],
-              type: "",
-              id: uuidv4(),
-            });
-          }}
-        />
+        <input ref={newBoardNameRef} placeholder="Name of new board" />
       </div>
       <div>
         <h2>Choose board template</h2>
@@ -175,7 +168,7 @@ export default function NewBoard({
       <div>
         <CreateButton
           onClick={() => {
-            if (newBoard.name === "") {
+            if (newBoardNameRef.current.value === "") {
               errorModalOpen("Board must have title");
             } else if (selectedType === "") {
               errorModalOpen("Please choose a template");

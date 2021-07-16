@@ -5,17 +5,18 @@ import styled from "styled-components";
 
 import { ACTIONS } from "../../App";
 import { v4 as uuidv4 } from "uuid";
+import { useRef } from "react";
 
 export default function AddCard({
   index,
   listTitle,
   state,
   card,
-  setCard,
   lists,
   dispatch,
   errorModalOpen,
 }) {
+  const newCardName = useRef();
   const show = state.showAddCard
     ? state.showAddCard.id === index
       ? state.showAddCard.show
@@ -30,7 +31,7 @@ export default function AddCard({
     const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
     const newCard = {
       id: uuidv4(),
-      title: card,
+      title: newCardName.current.value,
       timeStamp,
       description: "",
       comments: [{ text: `Card created`, created: timeStamp }],
@@ -42,18 +43,15 @@ export default function AddCard({
       type: ACTIONS.CURRENT_BOARD,
       payload: { newBoard: [...state.board] },
     });
-    setCard("");
-    console.log("setcard");
+    newCardName.current.value = '';
+    
   };
 
   return (
     <AddCardContainer show={show}>
       <input
-        value={card}
+        ref={newCardName}
         placeholder="Enter card title"
-        onChange={(e) => {
-          setCard(e.target.value);
-        }}
         onKeyDown={(e) => {
           e.target.value !== "" &&
             (e.code === "Enter" || e.code === "NumpadEnter") &&

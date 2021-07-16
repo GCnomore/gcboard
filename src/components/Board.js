@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Cards from "./Cards";
 import Lists from "./List/Lists";
 import NewBoard from "./NewBoard";
@@ -29,8 +29,10 @@ export default function Board({
     id: "",
   });
   const [changeName, setChangeName] = useState({ name: "", show: false });
+  const newListTitle = useRef();
 
   useEffect(() => {
+    console.log("@@@@@", currentBoard.byteLength);
     document.addEventListener("keydown", (e) => {
       e.key === "Escape" && setOpen(false);
       e.key === "Escape" && setChangeName({ name: "", show: false });
@@ -78,8 +80,8 @@ export default function Board({
   };
 
   const addList = () => {
-    if (state.addList.title !== "") {
-      currentBoard.lists.push({ title: state.addList.title, cards: [] });
+    if (newListTitle.current.value !== "") {
+      currentBoard.lists.push({ title: newListTitle.current.value, cards: [] });
       dispatch({
         type: ACTIONS.CURRENT_BOARD,
         payload: { newBoard: [...state.board] },
@@ -93,21 +95,11 @@ export default function Board({
   const renderAddList = () => {
     return (
       <AddList>
-        <input
-          placeholder="Enter list title"
-          onChange={(e) => {
-            dispatch({
-              type: ACTIONS.ADD_LIST,
-              add: true,
-              value: e.target.value,
-            });
-          }}
-        />
+        <input ref={newListTitle} placeholder="Enter list title" />
         <div>
           <Button
             variant="contained"
-            onClick={(e) => {
-              e.preventDefault();
+            onClick={() => {
               addList();
             }}
           >

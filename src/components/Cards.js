@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,6 @@ export default function Cards({
   dispatch,
   currentBoard,
 }) {
-  const [comment, setComment] = useState("");
   const [description, setDescription] = useState({
     edit: cardData.data.description === "" ? true : false,
     desc: cardData.data.description,
@@ -48,6 +47,9 @@ export default function Cards({
       },
     },
   });
+  const cardTitleRef = useRef();
+  const descriptionRef = useRef();
+  const commentRef = useRef();
 
   const addComment = () => {
     const time =
@@ -56,24 +58,25 @@ export default function Cards({
         : `${new Date().getHours()}:${new Date().getMinutes()}AM`;
     const timeStamp = `${time} ${new Date().getMonth()}/${new Date().getDate()}/${new Date().getFullYear()}`;
     const newComment = {
-      text: comment,
+      text: commentRef.current.value,
       created: timeStamp,
     };
     currentCard.comments = [...currentCard.comments, newComment];
-    setComment("");
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
       payload: { newBoard: state.board },
     });
+    commentRef.current.value = "";
   };
 
   const addDescription = () => {
-    currentCard.description = description.desc;
+    currentCard.description = descriptionRef.current.value;
     setDescription({ edit: false, desc: "" });
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
       payload: { newBoard: state.board },
     });
+    descriptionRef.current.value = "";
   };
 
   const deleteCard = () => {
@@ -91,7 +94,7 @@ export default function Cards({
     const newList = currentBoard.lists.find(
       (list) => list.title === cardData.listTitle
     );
-    newList.cards[cardData.cardIndex].title = editCardTitle.title;
+    newList.cards[cardData.cardIndex].title = cardTitleRef.current.value;
 
     dispatch({
       type: ACTIONS.CURRENT_BOARD,
@@ -129,6 +132,36 @@ export default function Cards({
     });
   };
 
+  const setColorLabel = (color, name) => {
+    setAddLabel((prev) => {
+      return {
+        show: prev.show,
+        labels: {
+          ...prev.labels,
+          [name]: {
+            color,
+            selected: prev.labels[name].selected,
+          },
+        },
+      };
+    });
+  };
+
+  const setColorCheckBox = (name, checked) => {
+    setAddLabel((prev) => {
+      return {
+        show: prev.show,
+        labels: {
+          ...prev.labels,
+          [name]: {
+            color: prev.labels[name].color,
+            selected: checked ? true : false,
+          },
+        },
+      };
+    });
+  };
+
   return (
     <CardsContainer>
       <AddLabelModal
@@ -148,38 +181,15 @@ export default function Cards({
                   type="color"
                   name="label1"
                   value={addLabel.labels.label1.color}
-                  onChange={(e) =>
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label1: {
-                            color: e.target.value,
-                            selected: prev.labels.label1.selected,
-                          },
-                        },
-                      };
-                    })
-                  }
+                  onChange={(e) => setColorLabel(e.target.value, e.target.name)}
                 />
                 <input
                   type="checkbox"
+                  name="label1"
                   checked={addLabel.labels.label1.selected}
-                  onChange={(e) => {
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label1: {
-                            color: prev.labels.label1.color,
-                            selected: e.target.checked ? true : false,
-                          },
-                        },
-                      };
-                    });
-                  }}
+                  onChange={(e) =>
+                    setColorCheckBox(e.target.name, e.target.checked)
+                  }
                 />
               </li>
               <li>
@@ -187,38 +197,15 @@ export default function Cards({
                   type="color"
                   name="label2"
                   value={addLabel.labels.label2.color}
-                  onChange={(e) =>
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label2: {
-                            color: e.target.value,
-                            selected: prev.labels.label2.selected,
-                          },
-                        },
-                      };
-                    })
-                  }
+                  onChange={(e) => setColorLabel(e.target.value, e.target.name)}
                 />
                 <input
                   type="checkbox"
+                  name="label2"
                   checked={addLabel.labels.label2.selected}
-                  onChange={(e) => {
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label2: {
-                            color: prev.labels.label2.color,
-                            selected: e.target.checked ? true : false,
-                          },
-                        },
-                      };
-                    });
-                  }}
+                  onChange={(e) =>
+                    setColorCheckBox(e.target.name, e.target.checked)
+                  }
                 />
               </li>
               <li>
@@ -226,37 +213,14 @@ export default function Cards({
                   type="color"
                   name="label3"
                   value={addLabel.labels.label3.color}
-                  onChange={(e) =>
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label3: {
-                            color: e.target.value,
-                            selected: prev.labels.label3.selected,
-                          },
-                        },
-                      };
-                    })
-                  }
+                  onChange={(e) => setColorLabel(e.target.value, e.target.name)}
                 />
                 <input
                   type="checkbox"
+                  name="label3"
                   checked={addLabel.labels.label3.selected}
                   onChange={(e) => {
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label3: {
-                            color: prev.labels.label3.color,
-                            selected: e.target.checked ? true : false,
-                          },
-                        },
-                      };
-                    });
+                    setColorCheckBox(e.target.name, e.target.checked);
                   }}
                 />
               </li>
@@ -265,37 +229,14 @@ export default function Cards({
                   type="color"
                   name="label4"
                   value={addLabel.labels.label4.color}
-                  onChange={(e) =>
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label4: {
-                            color: e.target.value,
-                            selected: prev.labels.label4.selected,
-                          },
-                        },
-                      };
-                    })
-                  }
+                  onChange={(e) => setColorLabel(e.target.value, e.target.name)}
                 />
                 <input
                   type="checkbox"
+                  name="label4"
                   checked={addLabel.labels.label4.selected}
                   onChange={(e) => {
-                    setAddLabel((prev) => {
-                      return {
-                        show: prev.show,
-                        labels: {
-                          ...prev.labels,
-                          label4: {
-                            color: prev.labels.label4.color,
-                            selected: e.target.checked ? true : false,
-                          },
-                        },
-                      };
-                    });
+                    setColorCheckBox(e.target.name, e.target.checked);
                   }}
                 />
               </li>
@@ -308,11 +249,9 @@ export default function Cards({
         <div>
           {editCardTitle.edit ? (
             <input
+              ref={cardTitleRef}
               autoFocus={true}
               defaultValue={cardData.data.title}
-              onChange={(e) =>
-                setEditCardTitle({ title: e.target.value, edit: true })
-              }
               onKeyDown={(e) =>
                 (e.code === "Enter" || e.code === "NumpadEnter") &&
                 changeCardTitle()
@@ -365,13 +304,10 @@ export default function Cards({
             <div>
               {description.edit ? (
                 <DescriptionInput
-                  value={description.desc}
-                  onChange={(e) =>
-                    setDescription({ edit: true, desc: e.target.value })
-                  }
+                  ref={descriptionRef}
                   onKeyDown={(e) => {
                     (e.code === "Enter" || e.code === "NumpadEnter") &&
-                      addDescription(e.target.value);
+                      addDescription();
                   }}
                 />
               ) : (
@@ -406,8 +342,7 @@ export default function Cards({
               </Comments>
             </div>
             <CardInput
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              ref={commentRef}
               onKeyDown={(e) => {
                 (e.code === "Enter" || e.code === "NumpadEnter") &&
                   addComment();
